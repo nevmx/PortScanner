@@ -48,14 +48,18 @@ namespace PortScanner
         {
             bool result = false;
 
+            tcpClient = new TcpClient();
+
             try
             {
                 tcpClient.Connect(Hostname, Port);
                 result = true;
+                tcpClient.Close();
             }
             catch (Exception)
             {
                 result = false;
+                tcpClient.Close();
             }
 
             return result;

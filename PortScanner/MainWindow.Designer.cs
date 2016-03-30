@@ -79,6 +79,7 @@
             this.checkPortButton.TabIndex = 4;
             this.checkPortButton.Text = "Check Port";
             this.checkPortButton.UseVisualStyleBackColor = true;
+            this.checkPortButton.Click += new System.EventHandler(this.checkPortButton_Click);
             // 
             // statusTextBox
             // 

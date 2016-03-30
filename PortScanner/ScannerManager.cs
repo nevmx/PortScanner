@@ -29,5 +29,20 @@ namespace PortScanner
                 return instance;
             }
         }
+
+        // Initialize PortScanner
+        public void Initialize()
+        {
+            portScanner.Initialize();
+        }
+
+        // Execute for one specific IP and port
+        public bool ExecuteOnce(string hostname, int port)
+        {
+            portScanner.Hostname = hostname;
+            portScanner.Port = port;
+
+            return portScanner.CheckOpen();
+        }
     }
 }
