@@ -40,7 +40,6 @@ namespace PortScanner
         // Instantiate the TcpClient
         public void Initialize()
         {
-            tcpClient = new TcpClient();
         }
 
         // Try to connect to see whether port is open or not
@@ -48,19 +47,19 @@ namespace PortScanner
         {
             bool result = false;
 
-            tcpClient = new TcpClient();
+            using (tcpClient = new TcpClient())
+	    {
 
-            try
-            {
-                tcpClient.Connect(Hostname, Port);
-                result = true;
-                tcpClient.Close();
-            }
-            catch (Exception)
-            {
-                result = false;
-                tcpClient.Close();
-            }
+            	try
+            	{
+                	tcpClient.Connect(Hostname, Port);
+                	result = true;
+            	}
+            	catch (Exception)
+            	{
+                	result = false;
+            	}
+	    }
 
             return result;
         }
