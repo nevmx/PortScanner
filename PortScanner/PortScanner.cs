@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace PortScanner
 {
-
     class PortScanner
     {
         // Hostname and port for connections
