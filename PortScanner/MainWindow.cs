@@ -12,12 +12,20 @@ namespace PortScanner
 {
     public partial class MainWindow : Form
     {
+        // Delegate to report back with an open port
+        public delegate void WriteOpenPortDelegate(int openPort);
 
         ScannerManager sm;
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        // Write an open port to status bar
+        private void WriteOpenPort(int port)
+        {
+            statusTextBox.Text = String.Format("{0} {1}", statusTextBox.Text, port);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -36,34 +44,67 @@ namespace PortScanner
 
         private void checkPortButton_Click(object sender, EventArgs e)
         {
-            // Disable inputs
-            hostnameTextBox.Enabled = false;
-            portTextBox.Enabled = false;
-            checkPortButton.Enabled = false;
+            ToggleInputs(false);
 
-            // Get inputs
-            string hostname = hostnameTextBox.Text;
-            int port = System.Int32.Parse(portTextBox.Text);
-
-            // Set status box text
-            statusTextBox.Text = String.Format("Connecting to {0}, port {1}...", hostname, port);
-
-            // Send one check request
-            bool result = sm.ExecuteOnce(hostname, port);
-
-            if (result)
+            // Simple one port check
+            if (portRangeCheckBox.Enabled)
             {
-                statusTextBox.Text = String.Format("{0}, port {1} is open. Standby...", hostname, port);
+                // Get inputs
+                string hostname = hostnameTextBox.Text;
+                int port = System.Int32.Parse(portTextBoxMin.Text);
+
+                // Set status box text
+                statusTextBox.Text = String.Format("Connecting to {0}, port {1}...", hostname, port);
+
+                // Send one check request
+                bool result = sm.ExecuteOnce(hostname, port);
+
+                if (result)
+                {
+                    statusTextBox.Text = String.Format("{0}, port {1} is open. Standby...", hostname, port);
+                }
+                else
+                {
+                    statusTextBox.Text = String.Format("{0}, port {1} is closed. Standby...", hostname, port);
+                }
+            }
+            // Port range check
+            else
+            {
+                WriteOpenPortDelegate writeDelegate = new WriteOpenPortDelegate(WriteOpenPort);
+
+                string hostname = hostnameTextBox.Text;
+                int portMin = Int32.Parse(portTextBoxMin.Text);
+                int portMax = Int32.Parse(portTextBoxMax.Text);
+
+                statusTextBox.Text = "Open: ";
+
+                sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
+            }
+            // Enable inputs
+            ToggleInputs(true);
+        }
+
+        private void portRangeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (portRangeCheckBox.Checked)
+            {
+                portTextBoxMax.Enabled = true;
             }
             else
             {
-                statusTextBox.Text = String.Format("{0}, port {1} is closed. Standby...", hostname, port);
+                portTextBoxMax.Enabled = false;
             }
+        }
 
-            // Enable inputs
-            hostnameTextBox.Enabled = true;
-            portTextBox.Enabled = true;
-            checkPortButton.Enabled = true;
+        // Toggle all inputs
+        private void ToggleInputs(bool setting)
+        {
+            hostnameTextBox.Enabled = setting;
+            portTextBoxMin.Enabled = setting;
+            checkPortButton.Enabled = setting;
+            portTextBoxMax.Enabled = setting;
+            portRangeCheckBox.Enabled = setting;
         }
     }
 }

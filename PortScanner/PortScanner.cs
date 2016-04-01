@@ -12,6 +12,7 @@ namespace PortScanner
         // Hostname and port for connections
         public string Hostname { get; set; }
         public int Port { get; set; }
+        public int Timeout { get; set; }
 
         private static PortScanner instance;
 
@@ -22,6 +23,7 @@ namespace PortScanner
         {
             Hostname = "127.0.0.1";
             Port = 22;
+            Timeout = 1000;
         }
 
         public static PortScanner Instance
@@ -45,23 +47,17 @@ namespace PortScanner
         // Try to connect to see whether port is open or not
         public bool CheckOpen()
         {
-            bool result = false;
-
             using (tcpClient = new TcpClient())
-	    {
-
-            	try
-            	{
-                	tcpClient.Connect(Hostname, Port);
-                	result = true;
-            	}
-            	catch (Exception)
-            	{
-                	result = false;
-            	}
-	    }
-
-            return result;
+	        {
+                if (!tcpClient.ConnectAsync(Hostname, Port).Wait(Timeout))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
     }
 }

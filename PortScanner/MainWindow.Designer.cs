@@ -31,10 +31,13 @@
             this.hostnameTextBox = new System.Windows.Forms.TextBox();
             this.hostnameLabel = new System.Windows.Forms.Label();
             this.portLabel = new System.Windows.Forms.Label();
-            this.portTextBox = new System.Windows.Forms.TextBox();
+            this.portTextBoxMin = new System.Windows.Forms.TextBox();
             this.checkPortButton = new System.Windows.Forms.Button();
             this.statusTextBox = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.dashLabel = new System.Windows.Forms.Label();
+            this.portTextBoxMax = new System.Windows.Forms.TextBox();
+            this.portRangeCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // hostnameTextBox
@@ -59,25 +62,25 @@
             this.portLabel.AutoSize = true;
             this.portLabel.Location = new System.Drawing.Point(256, 15);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(29, 13);
+            this.portLabel.Size = new System.Drawing.Size(34, 13);
             this.portLabel.TabIndex = 2;
-            this.portLabel.Text = "Port:";
+            this.portLabel.Text = "Ports:";
             // 
-            // portTextBox
+            // portTextBoxMin
             // 
-            this.portTextBox.Location = new System.Drawing.Point(291, 12);
-            this.portTextBox.MaxLength = 5;
-            this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(38, 20);
-            this.portTextBox.TabIndex = 3;
+            this.portTextBoxMin.Location = new System.Drawing.Point(296, 12);
+            this.portTextBoxMin.MaxLength = 5;
+            this.portTextBoxMin.Name = "portTextBoxMin";
+            this.portTextBoxMin.Size = new System.Drawing.Size(38, 20);
+            this.portTextBoxMin.TabIndex = 3;
             // 
             // checkPortButton
             // 
-            this.checkPortButton.Location = new System.Drawing.Point(357, 35);
+            this.checkPortButton.Location = new System.Drawing.Point(356, 35);
             this.checkPortButton.Name = "checkPortButton";
             this.checkPortButton.Size = new System.Drawing.Size(75, 23);
             this.checkPortButton.TabIndex = 4;
-            this.checkPortButton.Text = "Check Port";
+            this.checkPortButton.Text = "Check Ports";
             this.checkPortButton.UseVisualStyleBackColor = true;
             this.checkPortButton.Click += new System.EventHandler(this.checkPortButton_Click);
             // 
@@ -101,15 +104,47 @@
             this.statusLabel.TabIndex = 6;
             this.statusLabel.Text = "Status:";
             // 
+            // dashLabel
+            // 
+            this.dashLabel.AutoSize = true;
+            this.dashLabel.Location = new System.Drawing.Point(340, 15);
+            this.dashLabel.Name = "dashLabel";
+            this.dashLabel.Size = new System.Drawing.Size(10, 13);
+            this.dashLabel.TabIndex = 7;
+            this.dashLabel.Text = "-";
+            // 
+            // portTextBoxMax
+            // 
+            this.portTextBoxMax.Enabled = false;
+            this.portTextBoxMax.Location = new System.Drawing.Point(356, 12);
+            this.portTextBoxMax.MaxLength = 5;
+            this.portTextBoxMax.Name = "portTextBoxMax";
+            this.portTextBoxMax.Size = new System.Drawing.Size(38, 20);
+            this.portTextBoxMax.TabIndex = 8;
+            // 
+            // portRangeCheckBox
+            // 
+            this.portRangeCheckBox.AutoSize = true;
+            this.portRangeCheckBox.Location = new System.Drawing.Point(400, 14);
+            this.portRangeCheckBox.Name = "portRangeCheckBox";
+            this.portRangeCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.portRangeCheckBox.TabIndex = 9;
+            this.portRangeCheckBox.Text = "Port Range";
+            this.portRangeCheckBox.UseVisualStyleBackColor = true;
+            this.portRangeCheckBox.CheckedChanged += new System.EventHandler(this.portRangeCheckBox_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 77);
+            this.ClientSize = new System.Drawing.Size(491, 71);
+            this.Controls.Add(this.portRangeCheckBox);
+            this.Controls.Add(this.portTextBoxMax);
+            this.Controls.Add(this.dashLabel);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.statusTextBox);
             this.Controls.Add(this.checkPortButton);
-            this.Controls.Add(this.portTextBox);
+            this.Controls.Add(this.portTextBoxMin);
             this.Controls.Add(this.portLabel);
             this.Controls.Add(this.hostnameLabel);
             this.Controls.Add(this.hostnameTextBox);
@@ -127,10 +162,13 @@
         private System.Windows.Forms.TextBox hostnameTextBox;
         private System.Windows.Forms.Label hostnameLabel;
         private System.Windows.Forms.Label portLabel;
-        private System.Windows.Forms.TextBox portTextBox;
+        private System.Windows.Forms.TextBox portTextBoxMin;
         private System.Windows.Forms.Button checkPortButton;
         private System.Windows.Forms.TextBox statusTextBox;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Label dashLabel;
+        private System.Windows.Forms.TextBox portTextBoxMax;
+        private System.Windows.Forms.CheckBox portRangeCheckBox;
     }
 }
 
