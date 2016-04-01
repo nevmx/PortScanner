@@ -7,15 +7,20 @@ using System.Threading.Tasks;
 
 namespace PortScanner
 {
+
     class PortScanner
     {
         // Hostname and port for connections
         public string Hostname { get; set; }
         public int Port { get; set; }
+
+	// Timeout property for TCP client timeout in milleseconds
         public int Timeout { get; set; }
 
+	// Instance property - this is a singleton class
         private static PortScanner instance;
 
+	// The TCP client used to 
         private TcpClient tcpClient;
 
         // Private constructor - singleton class
