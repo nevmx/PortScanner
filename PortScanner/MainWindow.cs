@@ -45,7 +45,7 @@ namespace PortScanner
             ToggleInputs(false);
 
             // Simple one port check
-            if (portRangeCheckBox.Enabled)
+            if (!portRangeCheckBox.Enabled)
             {
                 // Get inputs
                 string hostname = hostnameTextBox.Text;
@@ -103,6 +103,12 @@ namespace PortScanner
             checkPortButton.Enabled = setting;
             portTextBoxMax.Enabled = setting;
             portRangeCheckBox.Enabled = setting;
+
+            // Re-disable the portMax text box
+            if (!portRangeCheckBox.Checked)
+            {
+                portTextBoxMax.Enabled = false;
+            }
         }
     }
 }

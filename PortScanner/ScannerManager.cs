@@ -45,6 +45,7 @@ namespace PortScanner
             return portScanner.CheckOpen();
         }
 
+        /*
         public List<int> ExecuteRange(string hostname, int min, int max, MainWindow.WriteOpenPortDelegate delMethod)
         {
             // To be returned later
@@ -64,6 +65,6 @@ namespace PortScanner
                 }
             }
             return portList;
-        }
+        }*/
     }
 }
