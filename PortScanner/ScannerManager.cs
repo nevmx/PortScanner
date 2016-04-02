@@ -63,7 +63,6 @@ namespace PortScanner
                     delMethod(i);
                 }
             }
-
             return portList;
         }
     }
