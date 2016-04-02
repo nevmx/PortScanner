@@ -25,6 +25,8 @@ namespace PortScanner
             // period passes, the port is not being listened/is closed
             using (tcpClient = new TcpClient())
             {
+                tcpClient.SendTimeout = Timeout;
+                tcpClient.ReceiveTimeout = Timeout;
                 if (!tcpClient.ConnectAsync(Hostname, Port).Wait(Timeout))
                 {
                     return false;
@@ -32,6 +34,23 @@ namespace PortScanner
                 else
                 {
                     return true;
+                }
+            }
+        }
+
+        public override async Task<bool> CheckOpenAsync()
+        {
+            using (tcpClient = new TcpClient())
+            {
+                var connection = tcpClient.ConnectAsync(Hostname, Port);
+                
+                if (await Task.WhenAny(connection, Task.Delay(Timeout)) == connection)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }

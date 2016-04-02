@@ -34,8 +34,27 @@ namespace PortScanner
             }
         }
 
+        // Scan one port asynchronously
+        public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback)
+        {
+            switch (scanMode)
+            {
+                case ScanMode.TCP:
+                    portScanner = new TCPPortScanner();
+                    portScanner.Hostname = hostname;
+                    portScanner.Port = port;
+                    portScanner.Timeout = timeout;
+
+                    var task = portScanner.CheckOpenAsync();
+                    await task;
+
+                    callback(port, task.Result);
+                    return;
+            }
+        }
+
         // Scan one port
-        public bool ExecuteOnce(string hostname, int port, ScanMode scanMode, MainWindow.ExecuteOnceCallback callback)
+        public bool ExecuteOnce(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceCallback callback)
         {
             switch(scanMode)
             {
@@ -43,13 +62,17 @@ namespace PortScanner
                     portScanner = new TCPPortScanner();
                     portScanner.Hostname = hostname;
                     portScanner.Port = port;
+                    portScanner.Timeout = timeout;
 
                     return portScanner.CheckOpen();
                 
                 case ScanMode.UDP:
-                    // Code for UDP scanning mode
-                    // TODO
-                    break;
+                    portScanner = new UDPPortScanner();
+                    portScanner.Hostname = hostname;
+                    portScanner.Port = port;
+                    portScanner.Timeout = timeout;
+
+                    return portScanner.CheckOpen();
 
             }
             return false;

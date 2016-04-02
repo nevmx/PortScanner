@@ -15,6 +15,8 @@ namespace PortScanner
         // Delegate to report back with one open port
         public delegate void ExecuteOnceCallback(int openPort);
 
+        public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen);
+
         // The manager instance
         ScannerManagerSingleton smc;
 
@@ -30,11 +32,35 @@ namespace PortScanner
 
             // Add new line to log text box
             statusTextBox.Text += Environment.NewLine;
+
+            // Populate the timeout times list box
+            PopulateTimeoutListBox();
+        }
+
+        private void PopulateTimeoutListBox()
+        {
+            // Assign the list to the ComboBox's DataSource property
+            timeoutComboBox.DataSource = TimeoutListItem.CreateTimeoutListItems();
+            timeoutComboBox.DisplayMember = "DisplayMember";
+            timeoutComboBox.ValueMember = "ValueMember";
         }
 
         private void statusTextBox_TextChanged(object sender, EventArgs e)
         {
             // When new text is written, scroll the bar down
+        }
+
+        private void PortResult(int port, bool isOpen)
+        {
+            if (isOpen)
+            {
+                statusTextBox.AppendText(String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine));
+            }
+            else
+            {
+                statusTextBox.AppendText(String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine));
+            }
+
         }
 
         private void checkPortButton_Click(object sender, EventArgs e)
@@ -51,20 +77,17 @@ namespace PortScanner
                 // Get desired mode TCP/UDP radio button
                 ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
 
+                // Get desired timeout
+                int timeout = (int)timeoutComboBox.SelectedValue;
+
                 // Set status box text
                 statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, port, Environment.NewLine));
 
-                // Send one check request
-                bool result = smc.ExecuteOnce(hostname, port, ScannerManagerSingleton.ScanMode.TCP, null);
+                // The callback for scan result
+                var callback = new ExecuteOnceAsyncCallback(PortResult);
 
-                if (result)
-                {
-                    statusTextBox.AppendText(String.Format("{0}, port {1} is open.{2}", hostname, port, Environment.NewLine));
-                }
-                else
-                {
-                    statusTextBox.AppendText(String.Format("{0}, port {1} is closed.{2}", hostname, port, Environment.NewLine));
-                }
+                // Send one check request
+                smc.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback);
             }
             // Port range check
             else

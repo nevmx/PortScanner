@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 // This is the base class for all Port Scanners
 namespace PortScanner
@@ -22,5 +23,7 @@ namespace PortScanner
 
         // Check that the hostname is listening on the port
         public abstract bool CheckOpen();
+
+        public abstract Task<bool> CheckOpenAsync();
     }
 }

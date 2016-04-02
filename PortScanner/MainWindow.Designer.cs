@@ -41,7 +41,10 @@
             this.tcpModeRadioButton = new System.Windows.Forms.RadioButton();
             this.udpModeRadioButton = new System.Windows.Forms.RadioButton();
             this.modeGroupBox = new System.Windows.Forms.GroupBox();
+            this.timeoutGroupBox = new System.Windows.Forms.GroupBox();
+            this.timeoutComboBox = new System.Windows.Forms.ComboBox();
             this.modeGroupBox.SuspendLayout();
+            this.timeoutGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // hostnameTextBox
@@ -173,11 +176,35 @@
             this.modeGroupBox.TabStop = false;
             this.modeGroupBox.Text = "Mode";
             // 
+            // timeoutGroupBox
+            // 
+            this.timeoutGroupBox.Controls.Add(this.timeoutComboBox);
+            this.timeoutGroupBox.Location = new System.Drawing.Point(343, 166);
+            this.timeoutGroupBox.Name = "timeoutGroupBox";
+            this.timeoutGroupBox.Size = new System.Drawing.Size(110, 52);
+            this.timeoutGroupBox.TabIndex = 13;
+            this.timeoutGroupBox.TabStop = false;
+            this.timeoutGroupBox.Text = "Timeout";
+            // 
+            // timeoutComboBox
+            // 
+            this.timeoutComboBox.FormattingEnabled = true;
+            this.timeoutComboBox.Items.AddRange(new object[] {
+            "500 ms",
+            "1000 ms",
+            "1500 ms",
+            "2000 ms"});
+            this.timeoutComboBox.Location = new System.Drawing.Point(6, 21);
+            this.timeoutComboBox.Name = "timeoutComboBox";
+            this.timeoutComboBox.Size = new System.Drawing.Size(98, 21);
+            this.timeoutComboBox.TabIndex = 0;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 320);
+            this.Controls.Add(this.timeoutGroupBox);
             this.Controls.Add(this.modeGroupBox);
             this.Controls.Add(this.portRangeCheckBox);
             this.Controls.Add(this.portTextBoxMax);
@@ -195,6 +222,7 @@
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.modeGroupBox.ResumeLayout(false);
             this.modeGroupBox.PerformLayout();
+            this.timeoutGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,6 +243,8 @@
         private System.Windows.Forms.RadioButton tcpModeRadioButton;
         private System.Windows.Forms.RadioButton udpModeRadioButton;
         private System.Windows.Forms.GroupBox modeGroupBox;
+        private System.Windows.Forms.GroupBox timeoutGroupBox;
+        private System.Windows.Forms.ComboBox timeoutComboBox;
     }
 }
 
