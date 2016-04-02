@@ -43,6 +43,9 @@ namespace PortScanner
             timeoutComboBox.DataSource = TimeoutListItem.CreateTimeoutListItems();
             timeoutComboBox.DisplayMember = "DisplayMember";
             timeoutComboBox.ValueMember = "ValueMember";
+
+            // Set default value
+            timeoutComboBox.SelectedValue = 2000;
         }
 
         private void statusTextBox_TextChanged(object sender, EventArgs e)

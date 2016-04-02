@@ -18,6 +18,7 @@ namespace PortScanner
         {
         }
 
+        // TODO:
         public async override Task<bool> CheckOpenAsync()
         {
             return false;

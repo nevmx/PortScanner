@@ -38,18 +38,27 @@ namespace PortScanner
             }
         }
 
+        // Implementing the base's abstract method CheckOpenAsync()
         public override async Task<bool> CheckOpenAsync()
         {
             using (tcpClient = new TcpClient())
             {
+                // connection is the Task returned by ConnectAsync
                 var connection = tcpClient.ConnectAsync(Hostname, Port);
                 
                 if (await Task.WhenAny(connection, Task.Delay(Timeout)) == connection)
                 {
+                    // If connection was refused, return false
+                    // The exception within the task is a SocketException if the connection failed
+                    if (connection.Exception != null)
+                    {
+                        return false;
+                    }
                     return true;
                 }
                 else
                 {
+                    // Timeout occurred, this means that there is no connection and port is closed
                     return false;
                 }
             }

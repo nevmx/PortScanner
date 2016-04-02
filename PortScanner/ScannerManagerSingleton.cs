@@ -45,9 +45,11 @@ namespace PortScanner
                     portScanner.Port = port;
                     portScanner.Timeout = timeout;
 
+                    // Await for the result of this operation
                     var task = portScanner.CheckOpenAsync();
                     await task;
 
+                    // Callback with the result and the port
                     callback(port, task.Result);
                     return;
             }
