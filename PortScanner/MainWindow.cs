@@ -12,10 +12,11 @@ namespace PortScanner
 {
     public partial class MainWindow : Form
     {
-        // Delegate to report back with an open port
-        public delegate void WriteOpenPortDelegate(int openPort);
+        // Delegate to report back with one open port
+        public delegate void ExecuteOnceCallback(int openPort);
 
-        ScannerManager sm;
+        // The manager instance
+        ScannerManagerSingleton smc;
 
         public MainWindow()
         {
@@ -30,11 +31,8 @@ namespace PortScanner
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            // Get the manager instance
-            sm = ScannerManager.Instance;
-
-            // Initialize ScannerManager
-            sm.Initialize();
+            // Get the ScannerManagerSingleton instance
+            smc = ScannerManagerSingleton.Instance;
         }
 
         private void statusTextBox_TextChanged(object sender, EventArgs e)
@@ -57,7 +55,7 @@ namespace PortScanner
                 statusTextBox.Text = String.Format("Connecting to {0}, port {1}...", hostname, port);
 
                 // Send one check request
-                bool result = sm.ExecuteOnce(hostname, port);
+                bool result = smc.ExecuteOnce(hostname, port, ScannerManagerSingleton.ScanMode.TCP, null);
 
                 if (result)
                 {
@@ -71,7 +69,7 @@ namespace PortScanner
             // Port range check
             else
             {
-                WriteOpenPortDelegate writeDelegate = new WriteOpenPortDelegate(WriteOpenPort);
+                var callback = new ExecuteOnceCallback(WriteOpenPort);
 
                 string hostname = hostnameTextBox.Text;
                 int portMin = Int32.Parse(portTextBoxMin.Text);
@@ -79,7 +77,7 @@ namespace PortScanner
 
                 statusTextBox.Text = "Open: ";
 
-                sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
+                // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
             }
             // Enable inputs
             ToggleInputs(true);

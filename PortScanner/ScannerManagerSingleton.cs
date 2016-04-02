@@ -11,7 +11,7 @@ namespace PortScanner
         private PortScannerBase portScanner;
 
         // Enumeration for scanning modes
-        enum ScanMode
+        public enum ScanMode
         {
             TCP = 1,
             UDP = 2
@@ -52,6 +52,7 @@ namespace PortScanner
                     break;
 
             }
+            return false;
         }
     }
 }
