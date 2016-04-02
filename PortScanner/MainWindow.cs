@@ -23,21 +23,18 @@ namespace PortScanner
             InitializeComponent();
         }
 
-        // Write an open port to status bar
-        private void WriteOpenPort(int port)
-        {
-            statusTextBox.Text = String.Format("{0} {1}", statusTextBox.Text, port);
-        }
-
         private void MainWindow_Load(object sender, EventArgs e)
         {
             // Get the ScannerManagerSingleton instance
             smc = ScannerManagerSingleton.Instance;
+
+            // Add new line to log text box
+            statusTextBox.Text += Environment.NewLine;
         }
 
         private void statusTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            // When new text is written, scroll the bar down
         }
 
         private void checkPortButton_Click(object sender, EventArgs e)
@@ -51,25 +48,28 @@ namespace PortScanner
                 string hostname = hostnameTextBox.Text;
                 int port = System.Int32.Parse(portTextBoxMin.Text);
 
+                // Get desired mode TCP/UDP radio button
+                ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
+
                 // Set status box text
-                statusTextBox.Text = String.Format("Connecting to {0}, port {1}...", hostname, port);
+                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, port, Environment.NewLine));
 
                 // Send one check request
                 bool result = smc.ExecuteOnce(hostname, port, ScannerManagerSingleton.ScanMode.TCP, null);
 
                 if (result)
                 {
-                    statusTextBox.Text = String.Format("{0}, port {1} is open. Standby...", hostname, port);
+                    statusTextBox.AppendText(String.Format("{0}, port {1} is open.{2}", hostname, port, Environment.NewLine));
                 }
                 else
                 {
-                    statusTextBox.Text = String.Format("{0}, port {1} is closed. Standby...", hostname, port);
+                    statusTextBox.AppendText(String.Format("{0}, port {1} is closed.{2}", hostname, port, Environment.NewLine));
                 }
             }
             // Port range check
             else
             {
-                var callback = new ExecuteOnceCallback(WriteOpenPort);
+                // var callback = new ExecuteOnceCallback(WriteOpenPort);
 
                 string hostname = hostnameTextBox.Text;
                 int portMin = Int32.Parse(portTextBoxMin.Text);
@@ -81,6 +81,15 @@ namespace PortScanner
             }
             // Enable inputs
             ToggleInputs(true);
+        }
+
+        // Read scan mode radio button selection
+        private ScannerManagerSingleton.ScanMode ReadScanMode()
+        {
+            if (tcpModeRadioButton.Checked)
+                return ScannerManagerSingleton.ScanMode.TCP;
+            else
+                return ScannerManagerSingleton.ScanMode.UDP;
         }
 
         private void portRangeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -109,6 +118,16 @@ namespace PortScanner
             {
                 portTextBoxMax.Enabled = false;
             }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

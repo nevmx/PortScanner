@@ -38,6 +38,10 @@
             this.dashLabel = new System.Windows.Forms.Label();
             this.portTextBoxMax = new System.Windows.Forms.TextBox();
             this.portRangeCheckBox = new System.Windows.Forms.CheckBox();
+            this.tcpModeRadioButton = new System.Windows.Forms.RadioButton();
+            this.udpModeRadioButton = new System.Windows.Forms.RadioButton();
+            this.modeGroupBox = new System.Windows.Forms.GroupBox();
+            this.modeGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // hostnameTextBox
@@ -53,18 +57,18 @@
             this.hostnameLabel.AutoSize = true;
             this.hostnameLabel.Location = new System.Drawing.Point(12, 15);
             this.hostnameLabel.Name = "hostnameLabel";
-            this.hostnameLabel.Size = new System.Drawing.Size(58, 13);
+            this.hostnameLabel.Size = new System.Drawing.Size(55, 13);
             this.hostnameLabel.TabIndex = 1;
-            this.hostnameLabel.Text = "Hostname:";
+            this.hostnameLabel.Text = "Hostname";
             // 
             // portLabel
             // 
             this.portLabel.AutoSize = true;
             this.portLabel.Location = new System.Drawing.Point(256, 15);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(34, 13);
+            this.portLabel.Size = new System.Drawing.Size(31, 13);
             this.portLabel.TabIndex = 2;
-            this.portLabel.Text = "Ports:";
+            this.portLabel.Text = "Ports";
             // 
             // portTextBoxMin
             // 
@@ -76,9 +80,9 @@
             // 
             // checkPortButton
             // 
-            this.checkPortButton.Location = new System.Drawing.Point(356, 35);
+            this.checkPortButton.Location = new System.Drawing.Point(356, 285);
             this.checkPortButton.Name = "checkPortButton";
-            this.checkPortButton.Size = new System.Drawing.Size(75, 23);
+            this.checkPortButton.Size = new System.Drawing.Size(123, 23);
             this.checkPortButton.TabIndex = 4;
             this.checkPortButton.Text = "Check Ports";
             this.checkPortButton.UseVisualStyleBackColor = true;
@@ -86,11 +90,12 @@
             // 
             // statusTextBox
             // 
-            this.statusTextBox.Enabled = false;
-            this.statusTextBox.Location = new System.Drawing.Point(76, 38);
+            this.statusTextBox.Location = new System.Drawing.Point(15, 55);
+            this.statusTextBox.Multiline = true;
             this.statusTextBox.Name = "statusTextBox";
             this.statusTextBox.ReadOnly = true;
-            this.statusTextBox.Size = new System.Drawing.Size(253, 20);
+            this.statusTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.statusTextBox.Size = new System.Drawing.Size(314, 253);
             this.statusTextBox.TabIndex = 5;
             this.statusTextBox.Text = "Standby...";
             this.statusTextBox.TextChanged += new System.EventHandler(this.statusTextBox_TextChanged);
@@ -98,11 +103,11 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(30, 41);
+            this.statusLabel.Location = new System.Drawing.Point(12, 39);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(40, 13);
+            this.statusLabel.Size = new System.Drawing.Size(37, 13);
             this.statusLabel.TabIndex = 6;
-            this.statusLabel.Text = "Status:";
+            this.statusLabel.Text = "Status";
             // 
             // dashLabel
             // 
@@ -133,11 +138,47 @@
             this.portRangeCheckBox.UseVisualStyleBackColor = true;
             this.portRangeCheckBox.CheckedChanged += new System.EventHandler(this.portRangeCheckBox_CheckedChanged);
             // 
+            // tcpModeRadioButton
+            // 
+            this.tcpModeRadioButton.AutoSize = true;
+            this.tcpModeRadioButton.Checked = true;
+            this.tcpModeRadioButton.Location = new System.Drawing.Point(13, 24);
+            this.tcpModeRadioButton.Name = "tcpModeRadioButton";
+            this.tcpModeRadioButton.Size = new System.Drawing.Size(46, 17);
+            this.tcpModeRadioButton.TabIndex = 10;
+            this.tcpModeRadioButton.TabStop = true;
+            this.tcpModeRadioButton.Text = "TCP";
+            this.tcpModeRadioButton.UseVisualStyleBackColor = true;
+            this.tcpModeRadioButton.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // udpModeRadioButton
+            // 
+            this.udpModeRadioButton.AutoSize = true;
+            this.udpModeRadioButton.Location = new System.Drawing.Point(13, 47);
+            this.udpModeRadioButton.Name = "udpModeRadioButton";
+            this.udpModeRadioButton.Size = new System.Drawing.Size(48, 17);
+            this.udpModeRadioButton.TabIndex = 11;
+            this.udpModeRadioButton.Text = "UDP";
+            this.udpModeRadioButton.UseVisualStyleBackColor = true;
+            this.udpModeRadioButton.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // modeGroupBox
+            // 
+            this.modeGroupBox.Controls.Add(this.udpModeRadioButton);
+            this.modeGroupBox.Controls.Add(this.tcpModeRadioButton);
+            this.modeGroupBox.Location = new System.Drawing.Point(343, 55);
+            this.modeGroupBox.Name = "modeGroupBox";
+            this.modeGroupBox.Size = new System.Drawing.Size(111, 83);
+            this.modeGroupBox.TabIndex = 12;
+            this.modeGroupBox.TabStop = false;
+            this.modeGroupBox.Text = "Mode";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 71);
+            this.ClientSize = new System.Drawing.Size(491, 320);
+            this.Controls.Add(this.modeGroupBox);
             this.Controls.Add(this.portRangeCheckBox);
             this.Controls.Add(this.portTextBoxMax);
             this.Controls.Add(this.dashLabel);
@@ -152,6 +193,8 @@
             this.Name = "MainWindow";
             this.Text = "PortScanner 0.1";
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.modeGroupBox.ResumeLayout(false);
+            this.modeGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,6 +212,9 @@
         private System.Windows.Forms.Label dashLabel;
         private System.Windows.Forms.TextBox portTextBoxMax;
         private System.Windows.Forms.CheckBox portRangeCheckBox;
+        private System.Windows.Forms.RadioButton tcpModeRadioButton;
+        private System.Windows.Forms.RadioButton udpModeRadioButton;
+        private System.Windows.Forms.GroupBox modeGroupBox;
     }
 }
 
