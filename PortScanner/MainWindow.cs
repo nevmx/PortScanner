@@ -55,7 +55,6 @@ namespace PortScanner
 
         private void statusTextBox_TextChanged(object sender, EventArgs e)
         {
-            // When new text is written, scroll the bar down
         }
 
         private void PortResult(int port, bool isOpen, bool isCancelled)
@@ -153,6 +152,10 @@ namespace PortScanner
             {
                 portTextBoxMax.Enabled = false;
             }
+
+            // Set focus to hostnameTextBox
+            if (setting)
+                hostnameTextBox.Focus();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -167,6 +170,7 @@ namespace PortScanner
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            // If cts is instantiated (i.e. the scanning operation is in progress, request cancellation
             if (cts != null)
             {
                 cts.Cancel();

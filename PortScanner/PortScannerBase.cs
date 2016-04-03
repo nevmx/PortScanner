@@ -25,6 +25,7 @@ namespace PortScanner
         // Check that the hostname is listening on the port
         public abstract bool CheckOpen();
 
+        // Check that the hostname is listening on the port - asynchronously
         public abstract Task<bool> CheckOpenAsync(CancellationToken ct);
     }
 }
