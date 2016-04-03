@@ -43,6 +43,7 @@
             this.modeGroupBox = new System.Windows.Forms.GroupBox();
             this.timeoutGroupBox = new System.Windows.Forms.GroupBox();
             this.timeoutComboBox = new System.Windows.Forms.ComboBox();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.modeGroupBox.SuspendLayout();
             this.timeoutGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -201,11 +202,22 @@
             this.timeoutComboBox.Size = new System.Drawing.Size(98, 21);
             this.timeoutComboBox.TabIndex = 0;
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(356, 260);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(123, 23);
+            this.cancelButton.TabIndex = 14;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 320);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.timeoutGroupBox);
             this.Controls.Add(this.modeGroupBox);
             this.Controls.Add(this.portRangeCheckBox);
@@ -247,6 +259,7 @@
         private System.Windows.Forms.GroupBox modeGroupBox;
         private System.Windows.Forms.GroupBox timeoutGroupBox;
         private System.Windows.Forms.ComboBox timeoutComboBox;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
 

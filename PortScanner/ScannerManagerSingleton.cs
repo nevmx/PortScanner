@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 namespace PortScanner
 {
@@ -35,7 +36,7 @@ namespace PortScanner
         }
 
         // Scan one port asynchronously
-        public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback)
+        public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
         {
             switch (scanMode)
             {
@@ -46,11 +47,14 @@ namespace PortScanner
                     portScanner.Timeout = timeout;
 
                     // Await for the result of this operation
-                    var task = portScanner.CheckOpenAsync();
+                    var task = portScanner.CheckOpenAsync(ct);
                     await task;
 
+                    // If a cancellation request has been triggered through CancellationToken ct, we must advise the callback function
+                    bool cancelled = ct.IsCancellationRequested;
+
                     // Callback with the result and the port
-                    callback(port, task.Result);
+                    callback(port, task.Result, cancelled);
                     return;
             }
         }

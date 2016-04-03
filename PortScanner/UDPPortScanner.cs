@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PortScanner
@@ -19,7 +20,7 @@ namespace PortScanner
         }
 
         // TODO:
-        public async override Task<bool> CheckOpenAsync()
+        public async override Task<bool> CheckOpenAsync(CancellationToken ct)
         {
             return false;
         }

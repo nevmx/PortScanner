@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,10 +16,14 @@ namespace PortScanner
         // Delegate to report back with one open port
         public delegate void ExecuteOnceCallback(int openPort);
 
-        public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen);
+        // Delegate to report back with one open port (Async)
+        public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled);
 
         // The manager instance
         ScannerManagerSingleton smc;
+
+        // Cancellation token source for the cancel button
+        CancellationTokenSource cts;
 
         public MainWindow()
         {
@@ -53,60 +58,64 @@ namespace PortScanner
             // When new text is written, scroll the bar down
         }
 
-        private void PortResult(int port, bool isOpen)
+        private void PortResult(int port, bool isOpen, bool isCancelled)
         {
+            string status;
+
             if (isOpen)
             {
-                statusTextBox.AppendText(String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine));
+                status = String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine);
             }
             else
             {
-                statusTextBox.AppendText(String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine));
+                if (!isCancelled)
+                {
+                    status = String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine); 
+                }
+                else
+                {
+                    status = "Operation cancelled." + Environment.NewLine;
+                }
             }
 
+            statusTextBox.AppendText(status);
+            ToggleInputs(true);
         }
 
         private void checkPortButton_Click(object sender, EventArgs e)
         {
             ToggleInputs(false);
 
+            // Get user inputs
+            string hostname = hostnameTextBox.Text;
+            int portMin = System.Int32.Parse(portTextBoxMin.Text);
+            ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
+            int timeout = (int)timeoutComboBox.SelectedValue;
+
+            // Instantiate CTS
+            cts = new CancellationTokenSource();
+
             // Simple one port check
             if (!portRangeCheckBox.Enabled)
             {
-                // Get inputs
-                string hostname = hostnameTextBox.Text;
-                int port = System.Int32.Parse(portTextBoxMin.Text);
-
-                // Get desired mode TCP/UDP radio button
-                ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
-
-                // Get desired timeout
-                int timeout = (int)timeoutComboBox.SelectedValue;
-
                 // Set status box text
-                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, port, Environment.NewLine));
+                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
 
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
 
                 // Send one check request
-                smc.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback);
+                smc.ExecuteOnceAsync(hostname, portMin, timeout, scanMode, callback, cts.Token);
             }
+
             // Port range check
             else
             {
                 // var callback = new ExecuteOnceCallback(WriteOpenPort);
-
-                string hostname = hostnameTextBox.Text;
-                int portMin = Int32.Parse(portTextBoxMin.Text);
-                int portMax = Int32.Parse(portTextBoxMax.Text);
-
-                statusTextBox.Text = "Open: ";
+                int portMax = System.Int32.Parse(portTextBoxMax.Text);
 
                 // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
             }
-            // Enable inputs
-            ToggleInputs(true);
         }
 
         // Read scan mode radio button selection
@@ -154,6 +163,14 @@ namespace PortScanner
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            if (cts != null)
+            {
+                cts.Cancel();
+            }
         }
     }
 }
