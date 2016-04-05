@@ -12,3 +12,6 @@ This application is a (asynchronous!) port scanner written in C# using Visual St
 * TCP protocol
 * UDP protocol
 * User-defined timeout time
+
+## Class Diagram
+<img src="http://i.imgur.com/IjQ3qOi.jpg" />
