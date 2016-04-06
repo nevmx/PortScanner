@@ -62,6 +62,12 @@ namespace PortScanner
             // Callback with the result and the port
             callback(port, task.Result, cancelled);
         }
+
+        // Scan a range of ports asynchronously
+        public async void ExecuteRangeAsync(string hostname, int portMin, int portMax, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
+        {
+            // TODO
+        }
     }
 }
 
