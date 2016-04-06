@@ -80,11 +80,30 @@ namespace PortScanner
 
         private void checkPortButton_Click(object sender, EventArgs e)
         {
-            ToggleInputs(false);
-
             // Get user inputs
             string hostname = hostnameTextBox.Text;
-            int portMin = System.Int32.Parse(portTextBoxMin.Text);
+            if (hostname == "")
+            {
+                MessageBox.Show("Please enter a valid hostname.",
+                    "Input Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                hostnameTextBox.Focus();
+                return;
+            }
+
+            // Check port 
+            int portMin = InputChecker.ParsePort(portTextBoxMin.Text);
+            if (portMin == -1)
+            {
+                MessageBox.Show((portRangeCheckBox.Checked ? "Lower limit of port range" : "Port") + " invalid.", 
+                    "Input Error", 
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                portTextBoxMin.Focus();
+                return;
+            }
+
             ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
             int timeout = (int)timeoutComboBox.SelectedValue;
 
@@ -92,7 +111,7 @@ namespace PortScanner
             cts = new CancellationTokenSource();
 
             // Simple one port check
-            if (!portRangeCheckBox.Enabled)
+            if (!portRangeCheckBox.Checked)
             {
                 // Set status box text
                 statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
@@ -112,6 +131,8 @@ namespace PortScanner
 
                 // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
             }
+            ToggleInputs(false);
+
         }
 
         // Read scan mode radio button selection
