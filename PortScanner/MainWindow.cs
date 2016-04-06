@@ -61,20 +61,17 @@ namespace PortScanner
         {
             string status;
 
-            if (isOpen)
+            if (isCancelled)
+            {
+                status = "Operation cancelled." + Environment.NewLine;
+            }
+            else if (isOpen)
             {
                 status = String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine);
             }
             else
             {
-                if (!isCancelled)
-                {
-                    status = String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine); 
-                }
-                else
-                {
-                    status = "Operation cancelled." + Environment.NewLine;
-                }
+                status = String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine);
             }
 
             statusTextBox.AppendText(status);

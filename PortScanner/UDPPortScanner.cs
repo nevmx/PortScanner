@@ -22,17 +22,12 @@ namespace PortScanner
         // TODO:
         public async override Task<bool> CheckOpenAsync(CancellationToken ct)
         {
-            return false;
-        }
-
-        // Implementing the base's abstract method CheckOpen()
-        public override bool CheckOpen()
-        {
             // We are using a UDP client to see whether the port is open or not
             // Therefore, the absence of a response means that the port is open
             // If there is any respone, it is closed
             using (udpClient = new UdpClient())
             {
+                bool returnVal;
                 try
                 {
                     // Connect to the server
@@ -49,20 +44,33 @@ namespace PortScanner
                     // Port 0 means any available port
                     IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-                    // Blocks until a message returns on this socket from a remote host.
-                    Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                    string returnData = Encoding.ASCII.GetString(receiveBytes);
-
-                    // Uses the IPEndPoint object to determine which of these two hosts responded.
+                    // Asynchronously begin receiving
+                    var result = udpClient.ReceiveAsync();
+                    if (await Task.WhenAny(result, Task.Delay(Timeout, ct)) == result)
+                    {
+                        Console.WriteLine(Encoding.ASCII.GetString(result.Result.Buffer));
+                        returnVal = false;
+                    }
+                    else
+                    {
+                        // There was no response, we will consider this port as open
+                        returnVal = true;
+                    }
                     udpClient.Close();
-                    
+                    return returnVal;
                 }
                 catch (SocketException e)
                 {
-                    Console.WriteLine(e.ErrorCode);
+                    if (e.ErrorCode == 10054)
+                    {
+                        returnVal =  false;
+                    }
+                    else
+                    {
+                        returnVal =  true;
+                    }
                 }
-
-                return false;
+                return returnVal;
             }
         }
     }

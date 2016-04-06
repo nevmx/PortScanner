@@ -41,52 +41,26 @@ namespace PortScanner
             switch (scanMode)
             {
                 case ScanMode.TCP:
-                    // Instantiate port scanner and give it the proper inputs
                     portScanner = new TCPPortScanner();
-                    portScanner.Hostname = hostname;
-                    portScanner.Port = port;
-                    portScanner.Timeout = timeout;
-
-                    // Await for the result of this operation
-                    var task = portScanner.CheckOpenAsync(ct);
-                    await task;
-
-                    // If a cancellation request has been triggered through CancellationToken ct, we must advise the callback function
-                    bool cancelled = ct.IsCancellationRequested;
-
-                    // Callback with the result and the port
-                    callback(port, task.Result, cancelled);
-                    return;
-
-                case ScanMode.UDP:
-
-                    return;
-            }
-        }
-
-        // Scan one port
-        public bool ExecuteOnce(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceCallback callback)
-        {
-            switch(scanMode)
-            {
-                case ScanMode.TCP:
-                    portScanner = new TCPPortScanner();
-                    portScanner.Hostname = hostname;
-                    portScanner.Port = port;
-                    portScanner.Timeout = timeout;
-
-                    return portScanner.CheckOpen();
-                
+                    break;
                 case ScanMode.UDP:
                     portScanner = new UDPPortScanner();
-                    portScanner.Hostname = hostname;
-                    portScanner.Port = port;
-                    portScanner.Timeout = timeout;
-
-                    return portScanner.CheckOpen();
-
+                    break;
             }
-            return false;
+            // Assign values
+            portScanner.Hostname = hostname;
+            portScanner.Port = port;
+            portScanner.Timeout = timeout;
+
+            // Await for the result of this operation
+            var task = portScanner.CheckOpenAsync(ct);
+            await task;
+
+            // If a cancellation request has been triggered through CancellationToken ct, we must advise the callback function
+            bool cancelled = ct.IsCancellationRequested;
+
+            // Callback with the result and the port
+            callback(port, task.Result, cancelled);
         }
     }
 }
