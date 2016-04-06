@@ -41,6 +41,7 @@ namespace PortScanner
             switch (scanMode)
             {
                 case ScanMode.TCP:
+                    // Instantiate port scanner and give it the proper inputs
                     portScanner = new TCPPortScanner();
                     portScanner.Hostname = hostname;
                     portScanner.Port = port;
@@ -55,6 +56,10 @@ namespace PortScanner
 
                     // Callback with the result and the port
                     callback(port, task.Result, cancelled);
+                    return;
+
+                case ScanMode.UDP:
+
                     return;
             }
         }

@@ -94,6 +94,7 @@
             // 
             // statusTextBox
             // 
+            this.statusTextBox.Font = new System.Drawing.Font("Lucida Console", 9F);
             this.statusTextBox.Location = new System.Drawing.Point(15, 55);
             this.statusTextBox.Multiline = true;
             this.statusTextBox.Name = "statusTextBox";

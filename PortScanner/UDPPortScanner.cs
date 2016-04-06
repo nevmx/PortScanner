@@ -65,10 +65,5 @@ namespace PortScanner
                 return false;
             }
         }
-
-        private void UdpReceiveCallback(IAsyncResult result)
-        {
-            
-        }
     }
 }
