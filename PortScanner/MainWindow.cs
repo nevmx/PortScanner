@@ -42,6 +42,7 @@ namespace PortScanner
             PopulateTimeoutListBox();
         }
 
+        // Populate the timeout combo box
         private void PopulateTimeoutListBox()
         {
             // Assign the list to the ComboBox's DataSource property
@@ -57,23 +58,30 @@ namespace PortScanner
         {
         }
 
+        // This method is used as a callback for portscanning - writes to the log box (text box)
         private void PortResult(int port, bool isOpen, bool isCancelled)
         {
             string status;
 
+            // The operation has been cancelled by MainWindow
             if (isCancelled)
             {
                 status = "Operation cancelled." + Environment.NewLine;
             }
+
+            // The port is open
             else if (isOpen)
             {
                 status = String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine);
             }
+
+            // The port is closed
             else
             {
                 status = String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine);
             }
 
+            // Write to the logging box and then unfreeze user inputs
             statusTextBox.AppendText(status);
             ToggleInputs(true);
         }
@@ -131,6 +139,8 @@ namespace PortScanner
 
                 // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
             }
+
+            // Turn off user inputs
             ToggleInputs(false);
 
         }
@@ -146,6 +156,7 @@ namespace PortScanner
 
         private void portRangeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            // This enables or disables the max. port input box
             if (portRangeCheckBox.Checked)
             {
                 portTextBoxMax.Enabled = true;

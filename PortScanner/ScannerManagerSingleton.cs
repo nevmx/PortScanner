@@ -38,6 +38,7 @@ namespace PortScanner
         // Scan one port asynchronously
         public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
         {
+            // Instantiate a port scanner according to user input (TCP or UDP)
             switch (scanMode)
             {
                 case ScanMode.TCP:
@@ -47,6 +48,7 @@ namespace PortScanner
                     portScanner = new UDPPortScanner();
                     break;
             }
+
             // Assign values
             portScanner.Hostname = hostname;
             portScanner.Port = port;

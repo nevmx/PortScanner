@@ -11,7 +11,7 @@ namespace PortScanner
         // Check that a hostname string is valid
         public static bool IsValidHostname(string hostname)
         {
-            return false;
+            return hostname == "";
         }
 
         // Check that a port is valid - returns -1 if port is invalid
@@ -23,6 +23,7 @@ namespace PortScanner
             {
                 port = Int32.Parse(portString);
             }
+            // If any exception occurs, the string was not a proper port
             catch (Exception e)
             {
                 return -1;
@@ -35,5 +36,19 @@ namespace PortScanner
 
             return port;
         }
-    }
-}
+
+        // Check that timeout combobox user input is valid...
+        // Accepted formats: [time] ms or [time]ms
+        public static int ParseTimeout(string timeoutString)
+        {
+            int timeout;
+
+            // The regex that is used for matching the input against
+            var regex = new Regex("^\d*\s*(ms)?$");
+
+            try
+            {
+
+            }
+        }
+    }}
