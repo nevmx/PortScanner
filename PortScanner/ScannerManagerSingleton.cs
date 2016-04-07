@@ -35,19 +35,26 @@ namespace PortScanner
             }
         }
 
-        // Scan one port asynchronously
-        public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
+        // Instantiate the correct type of PortScanner
+        private void InstantiatePortScanner(ScanMode scanMode)
         {
-            // Instantiate a port scanner according to user input (TCP or UDP)
             switch (scanMode)
             {
                 case ScanMode.TCP:
                     portScanner = new TCPPortScanner();
                     break;
+
                 case ScanMode.UDP:
                     portScanner = new UDPPortScanner();
                     break;
             }
+        }
+
+        // Scan one port asynchronously
+        public async void ExecuteOnceAsync(string hostname, int port, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
+        {
+            // Instantiate a PortScanner
+            InstantiatePortScanner(scanMode);
 
             // Assign values
             portScanner.Hostname = hostname;
@@ -68,7 +75,26 @@ namespace PortScanner
         // Scan a range of ports asynchronously
         public async void ExecuteRangeAsync(string hostname, int portMin, int portMax, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
         {
-            // TODO
+            // Instantiate a PortScanner
+            InstantiatePortScanner(scanMode);
+
+            // Assign first values
+            portScanner.Hostname = hostname;
+            portScanner.Port = portMin;
+            portScanner.Timeout = timeout;
+
+            // Holds the Task<bool>
+            var task;
+
+            for (int i = portMin, i <= portMax; i++)
+            {
+                task = portScanner.CheckOpenAsync(ct);
+                await task;
+
+                bool cancelled = ct.IsCancellationRequested;
+
+                callback(i, task.Result, cancelled);
+            }
         }
     }
 }
