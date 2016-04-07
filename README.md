@@ -17,7 +17,7 @@ This software allows you to scan a port or a range of ports. You specify an IP a
 * User-defined timeout time
 
 ## Class Diagram
-<img src="http://i.imgur.com/IjQ3qOi.jpg" />
+![class diagram](http://s30.postimg.org/h55go01dt/PS_Class_Diagram.png "Class Diagram")
 
 ## Technical Description
 ### ScannerManagerSingleton Class
