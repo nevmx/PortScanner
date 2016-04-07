@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PortScanner
 {
@@ -61,6 +62,30 @@ namespace PortScanner
                 }
                 catch (SocketException e)
                 {
+                    Console.WriteLine("Error Code: " + e.ErrorCode);
+
+                    switch (e.ErrorCode)
+                    {
+                        case 10054:
+                            returnVal = false;
+                            break;
+
+                        case 11001:
+                            returnVal = false;
+                            MainWindow.ActiveForm.Invoke(new Action( () =>
+                            {
+                                MessageBox.Show(MainWindow.ActiveForm,
+                                    "Hostname could not be resolved.",
+                                    "Connection Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                            }));
+                            break;
+                        default:
+                            returnVal = true;
+                            break;
+                    }
+
                     if (e.ErrorCode == 10054)
                     {
                         returnVal =  false;
@@ -70,6 +95,7 @@ namespace PortScanner
                         returnVal =  true;
                     }
                 }
+                udpClient.Close();
                 return returnVal;
             }
         }

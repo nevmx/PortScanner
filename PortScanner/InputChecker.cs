@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PortScanner
@@ -41,14 +42,25 @@ namespace PortScanner
         // Accepted formats: [time] ms or [time]ms
         public static int ParseTimeout(string timeoutString)
         {
-            int timeout;
-
             // The regex that is used for matching the input against
-            var regex = new Regex("^\d*\s*(ms)?$");
-
-            try
+            var regex = new Regex(@"^\d*\s*(ms)?$");
+            
+            // Try matching the user input
+            if (!regex.IsMatch(timeoutString))
             {
-
+                return -1;
             }
+
+            // Slice off the "ms" part of the string
+            timeoutString = Regex.Match(timeoutString, @"\d+").Value;
+            int timeout = Int32.Parse(timeoutString);
+
+            // Doesn't work too well with a very short timeout period
+            if (timeout < 250 || timeout > 20000)
+            {
+                return -1;
+            }
+
+            return timeout;
         }
     }}

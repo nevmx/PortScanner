@@ -191,7 +191,6 @@
             // timeoutComboBox
             // 
             this.timeoutComboBox.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.timeoutComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timeoutComboBox.FormattingEnabled = true;
             this.timeoutComboBox.Items.AddRange(new object[] {
             "500 ms",
