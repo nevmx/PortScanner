@@ -85,15 +85,6 @@ namespace PortScanner
                             returnVal = true;
                             break;
                     }
-
-                    if (e.ErrorCode == 10054)
-                    {
-                        returnVal =  false;
-                    }
-                    else
-                    {
-                        returnVal =  true;
-                    }
                 }
                 udpClient.Close();
                 return returnVal;
