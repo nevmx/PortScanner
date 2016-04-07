@@ -72,6 +72,8 @@ namespace PortScanner
 
                         case 11001:
                             returnVal = false;
+
+                            // Display an error message on the main thread
                             MainWindow.ActiveForm.Invoke(new Action( () =>
                             {
                                 MessageBox.Show(MainWindow.ActiveForm,

@@ -253,5 +253,14 @@ namespace PortScanner
                 cts.Cancel();
             }
         }
+
+        // Executes when the exit button is clicked - form closes after prompt
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

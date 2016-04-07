@@ -44,6 +44,7 @@
             this.timeoutGroupBox = new System.Windows.Forms.GroupBox();
             this.timeoutComboBox = new System.Windows.Forms.ComboBox();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
             this.modeGroupBox.SuspendLayout();
             this.timeoutGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -84,7 +85,7 @@
             // 
             // checkPortButton
             // 
-            this.checkPortButton.Location = new System.Drawing.Point(356, 285);
+            this.checkPortButton.Location = new System.Drawing.Point(351, 291);
             this.checkPortButton.Name = "checkPortButton";
             this.checkPortButton.Size = new System.Drawing.Size(123, 23);
             this.checkPortButton.TabIndex = 4;
@@ -171,7 +172,7 @@
             // 
             this.modeGroupBox.Controls.Add(this.udpModeRadioButton);
             this.modeGroupBox.Controls.Add(this.tcpModeRadioButton);
-            this.modeGroupBox.Location = new System.Drawing.Point(343, 55);
+            this.modeGroupBox.Location = new System.Drawing.Point(343, 42);
             this.modeGroupBox.Name = "modeGroupBox";
             this.modeGroupBox.Size = new System.Drawing.Size(111, 83);
             this.modeGroupBox.TabIndex = 12;
@@ -181,7 +182,7 @@
             // timeoutGroupBox
             // 
             this.timeoutGroupBox.Controls.Add(this.timeoutComboBox);
-            this.timeoutGroupBox.Location = new System.Drawing.Point(343, 166);
+            this.timeoutGroupBox.Location = new System.Drawing.Point(343, 135);
             this.timeoutGroupBox.Name = "timeoutGroupBox";
             this.timeoutGroupBox.Size = new System.Drawing.Size(110, 52);
             this.timeoutGroupBox.TabIndex = 13;
@@ -205,13 +206,23 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(356, 260);
+            this.cancelButton.Location = new System.Drawing.Point(351, 266);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(123, 23);
             this.cancelButton.TabIndex = 14;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(351, 241);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(123, 23);
+            this.exitButton.TabIndex = 15;
+            this.exitButton.Text = "Exit";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
             // MainWindow
             // 
@@ -220,6 +231,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(491, 320);
+            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.timeoutGroupBox);
             this.Controls.Add(this.modeGroupBox);
@@ -263,6 +275,7 @@
         private System.Windows.Forms.GroupBox timeoutGroupBox;
         private System.Windows.Forms.ComboBox timeoutComboBox;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button exitButton;
     }
 }
 
