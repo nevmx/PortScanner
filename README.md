@@ -21,4 +21,9 @@ This software allows you to scan a port or a range of ports. You specify an IP a
 
 ## Technical Description
 ### ScannerManagerSingleton Class
-This class manages the port scanning activities. 
+This class manages port scanning activities. The MainWindow class has a reference to the instance of this singleton class, and calls the ExecuteOneAsync() method after the appropriate button is pushed. The MainWindow class passes a callback delegate that serves as an indicator that one port has been scanned.
+
+### PortScannerBase
+This is an abstract class that defines the base for PortScanner classes. All specific port scanner classes will inherit from this class. ScannerManagerSingleton refers to all types of PortScanners as PortScannerBase (polymorphism). This class holds the Hostname, Port and Timeout properties that are used by its derived classes for scanning ports. Only one port can be scanned at a tim ehe=
+### TCPPortScanner
+This is a class that extends PortScannerBase. It implements the method that scans one port.
