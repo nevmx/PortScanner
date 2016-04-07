@@ -25,6 +25,9 @@ namespace PortScanner
         // Cancellation token source for the cancel button
         CancellationTokenSource cts;
 
+        // Current mode of operation
+        private ScannerManagerSingleton.ScanMode currentScanMode;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -72,13 +75,13 @@ namespace PortScanner
             // The port is open
             else if (isOpen)
             {
-                status = String.Format("{0}, port {1} is open.{2}", hostnameTextBox.Text, port, Environment.NewLine);
+                status = String.Format("{0}, {1} port {2} is open.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
             }
 
             // The port is closed
             else
             {
-                status = String.Format("{0}, port {1} is closed.{2}", hostnameTextBox.Text, port, Environment.NewLine);
+                status = String.Format("{0}, {1} port {2} is closed.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
             }
 
             // Write to the logging box and then unfreeze user inputs
@@ -86,6 +89,28 @@ namespace PortScanner
             ToggleInputs(true);
         }
 
+        // Checks whether the timeout combo box has user input or not
+        private bool IsTimeoutComboBoxUserInput()
+        {
+            var inputText = timeoutComboBox.Text;
+
+            foreach (var displayMemberText in (List<TimeoutListItem>) timeoutComboBox.DataSource)
+            {
+                if (displayMemberText.DisplayMember == inputText)
+                {
+                    // Select the one that's in the box's list to prevent some problems
+                    // This will return because the user input IS in the combo box's DataSource
+                    // However it is still user input and does not have a ValueMember. Exception
+                    // will be thrown.
+                    timeoutComboBox.SelectedItem = displayMemberText;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Executed when the Check Port button is clicked
         private void checkPortButton_Click(object sender, EventArgs e)
         {
             // Get user inputs
@@ -112,8 +137,29 @@ namespace PortScanner
                 return;
             }
 
+            // Get scan mode
             ScannerManagerSingleton.ScanMode scanMode = ReadScanMode();
-            int timeout = (int)timeoutComboBox.SelectedValue;
+
+            // If custom timeout time, verify correct user input
+            int timeout;
+            if (IsTimeoutComboBoxUserInput())
+            {
+                // If valid, proceed with that input as timeout
+                timeout = InputChecker.ParseTimeout(timeoutComboBox.Text);
+                if (timeout == -1)
+                {
+                    MessageBox.Show("Timeout format: [time], [time]ms or [time] ms.\nTimeout must be between 250 ms and 20000 ms.",
+                        "Timeout Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else
+            {
+                // Else, use the ValueMember of the selected Member
+                timeout = (int)timeoutComboBox.SelectedValue;
+            }
 
             // Instantiate CTS
             cts = new CancellationTokenSource();
@@ -127,7 +173,8 @@ namespace PortScanner
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
 
-                // Send one check request
+                // Send one check request and toggle user inputs
+                ToggleInputs(false);
                 smc.ExecuteOnceAsync(hostname, portMin, timeout, scanMode, callback, cts.Token);
             }
 
@@ -139,19 +186,20 @@ namespace PortScanner
 
                 // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
             }
-
-            // Turn off user inputs
-            ToggleInputs(false);
-
         }
 
         // Read scan mode radio button selection
         private ScannerManagerSingleton.ScanMode ReadScanMode()
         {
             if (tcpModeRadioButton.Checked)
-                return ScannerManagerSingleton.ScanMode.TCP;
+            {
+                currentScanMode = ScannerManagerSingleton.ScanMode.TCP;
+            }
             else
-                return ScannerManagerSingleton.ScanMode.UDP;
+            {
+                currentScanMode = ScannerManagerSingleton.ScanMode.UDP;
+            }
+            return currentScanMode;
         }
 
         private void portRangeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -203,6 +251,15 @@ namespace PortScanner
             if (cts != null)
             {
                 cts.Cancel();
+            }
+        }
+
+        // Executes when the exit button is clicked - form closes after prompt
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
             }
         }
     }
