@@ -69,7 +69,7 @@ namespace PortScanner
             bool cancelled = ct.IsCancellationRequested;
 
             // Callback with the result and the port
-            callback(port, task.Result, cancelled);
+            callback(port, task.Result, cancelled, true);
         }
 
         // Scan a range of ports asynchronously
@@ -80,20 +80,26 @@ namespace PortScanner
 
             // Assign first values
             portScanner.Hostname = hostname;
-            portScanner.Port = portMin;
             portScanner.Timeout = timeout;
 
-            // Holds the Task<bool>
-            var task;
+            bool isLast = false;
+            bool cancelled = false;
 
-            for (int i = portMin, i <= portMax; i++)
+            for (int i = portMin; i <= portMax && !cancelled; i++)
             {
-                task = portScanner.CheckOpenAsync(ct);
+                if (i == portMax)
+                {
+                    isLast = true;
+                }
+
+                portScanner.Port = i;
+
+                var task = portScanner.CheckOpenAsync(ct);
                 await task;
 
-                bool cancelled = ct.IsCancellationRequested;
+                cancelled = ct.IsCancellationRequested;
 
-                callback(i, task.Result, cancelled);
+                callback(i, task.Result, cancelled, isLast);
             }
         }
     }

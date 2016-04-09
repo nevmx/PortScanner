@@ -25,7 +25,7 @@ namespace PortScanner
                 port = Int32.Parse(portString);
             }
             // If any exception occurs, the string was not a proper port
-            catch (Exception e)
+            catch (Exception)
             {
                 return -1;
             }

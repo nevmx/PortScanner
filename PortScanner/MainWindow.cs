@@ -17,7 +17,7 @@ namespace PortScanner
         public delegate void ExecuteOnceCallback(int openPort);
 
         // Delegate to report back with one open port (Async)
-        public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled);
+        public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled, bool isLast);
 
         // The manager instance
         ScannerManagerSingleton smc;
@@ -62,7 +62,7 @@ namespace PortScanner
         }
 
         // This method is used as a callback for portscanning - writes to the log box (text box)
-        private void PortResult(int port, bool isOpen, bool isCancelled)
+        private void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
         {
             string status;
 
@@ -86,7 +86,9 @@ namespace PortScanner
 
             // Write to the logging box and then unfreeze user inputs
             statusTextBox.AppendText(status);
-            ToggleInputs(true);
+
+            if (isLast || isCancelled)
+                ToggleInputs(true);
         }
 
         // Checks whether the timeout combo box has user input or not
@@ -181,10 +183,38 @@ namespace PortScanner
             // Port range check
             else
             {
-                // var callback = new ExecuteOnceCallback(WriteOpenPort);
-                int portMax = System.Int32.Parse(portTextBoxMax.Text);
+                // Verify input
+                int portMax = InputChecker.ParsePort(portTextBoxMax.Text);
+                if (portMax == -1)
+                {
+                    MessageBox.Show("Upper limit of port range invalid.",
+                        "Input Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    portTextBoxMax.Focus();
+                    return;
+                }
 
-                // TODO: sm.ExecuteRange(hostname, portMin, portMax, writeDelegate);
+                if (portMax < portMin)
+                {
+                    MessageBox.Show("Port range invalid.",
+                        "Input Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    portTextBoxMax.Focus();
+                    return;
+                }
+
+                // The callback for scan result
+                var callback = new ExecuteOnceAsyncCallback(PortResult);
+
+                // Set status box text
+                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
+
+                // Toggle inputs and begin operation
+                ToggleInputs(false);
+                smc.ExecuteRangeAsync(hostname, portMin, portMax, timeout, scanMode, callback, cts.Token);
+
             }
         }
 
