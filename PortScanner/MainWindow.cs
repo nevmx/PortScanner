@@ -245,6 +245,7 @@ namespace PortScanner
         // Toggle all inputs
         private void ToggleInputs(bool setting)
         {
+            loopScanCheckBox.Enabled = setting;
             hostnameTextBox.Enabled = setting;
             portTextBoxMin.Enabled = setting;
             checkPortButton.Enabled = setting;
