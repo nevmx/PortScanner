@@ -1,11 +1,12 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using TextBox = System.Windows.Forms.TextBox;
 
 namespace PortScanner.Reporting
 {
-    public class ReportingHandler
+    public class ReportingHandler : IReportingHandler
     {
         public static int ReportType = 1;
 
@@ -65,19 +66,37 @@ namespace PortScanner.Reporting
 
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            xlWorkSheet.Cells[1, 1] = "Sheet 1 content";
+            xlWorkSheet.Cells[1, 1] = "Port Scanning Report";
+            xlWorkSheet.Cells[2, 1] = "Date: " + DateTime.Now.ToLongDateString();
 
+            //Split mainwindow data into array based on line breaks
+            string[] portScanningData = SplitString(mainWindowTextBox);
+
+            //Populate cells with PortScanning Data
+            var startRow = 4;
+            foreach (var line in portScanningData.ToList())
+            {
+                xlWorkSheet.Cells[startRow, 1] = line;
+                startRow++;
+            }
+
+            //Save and Quit
             xlWorkBook.SaveAs(path, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
             xlWorkBook.Close(true, misValue, misValue);
             xlApp.Quit();
 
+            //Dispose of objects
             releaseObject(xlWorkSheet);
             releaseObject(xlWorkBook);
             releaseObject(xlApp);
 
-            MessageBox.Show("Excel file created , you can find the file here: " + path);
+            MessageBox.Show("Excel file created, you can find the file here: " + path);
         }
 
+        private string[] SplitString(TextBox textBox)
+        {
+            return textBox.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+        }
         private void releaseObject(object obj)
         {
             try

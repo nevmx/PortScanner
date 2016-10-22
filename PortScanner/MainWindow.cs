@@ -295,6 +295,7 @@ namespace PortScanner
 
         private void saveReportButton_Click(object sender, EventArgs e)
         {
+            //If txt type
             if (_reportingHandler.GetReportType() == 1)
             {
                 var saveFileDialog = _reportingHandler.GetSaveFileDialog();
@@ -307,6 +308,7 @@ namespace PortScanner
             }
             else
             {
+                //If xls type
                 var path = _reportingHandler.GetSaveFileLocation(Enum.ReportType.Xls);
                 _reportingHandler.BuildWorkBook(statusTextBox,path);
             }
