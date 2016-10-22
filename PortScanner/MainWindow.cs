@@ -1,8 +1,9 @@
-﻿using System;
+﻿using PortScanner.Reporting;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using PortScanner.Reporting;
 
 namespace PortScanner
 {
@@ -294,31 +295,35 @@ namespace PortScanner
 
         private void saveReportButton_Click(object sender, EventArgs e)
         {
-            var saveFileDialog = _reportingHandler.GetSaveFileDialog();
-            var result = saveFileDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
+            if (_reportingHandler.GetReportType() == 1)
             {
-                string filename = saveFileDialog.FileName;
+                var saveFileDialog = _reportingHandler.GetSaveFileDialog();
+                var result = saveFileDialog.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    File.WriteAllText(saveFileDialog.FileName, _reportingHandler.BuildTextFile(statusTextBox));
+                }
+            }
+            else
+            {
+                _reportingHandler.BuildWorkBook(statusTextBox);
             }
         }
 
         private void textFileRadioBtn_CheckedChanged(object sender, EventArgs e)
         {
-            
             _reportingHandler.SetReportType(Enum.ReportType.Txt);
         }
 
         private void xlsRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             _reportingHandler.SetReportType(Enum.ReportType.Xls);
-
         }
 
         private void csvRadioBtn_CheckedChanged(object sender, EventArgs e)
         {
             _reportingHandler.SetReportType(Enum.ReportType.Csv);
-
         }
     }
 }

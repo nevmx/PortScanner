@@ -49,7 +49,6 @@
             this.xlsRadioButton = new System.Windows.Forms.RadioButton();
             this.textFileRadioBtn = new System.Windows.Forms.RadioButton();
             this.saveReportButton = new System.Windows.Forms.Button();
-            this.csvRadioBtn = new System.Windows.Forms.RadioButton();
             this.modeGroupBox.SuspendLayout();
             this.timeoutGroupBox.SuspendLayout();
             this.reportingGroupBox.SuspendLayout();
@@ -251,14 +250,13 @@
             // 
             // reportingGroupBox
             // 
-            this.reportingGroupBox.Controls.Add(this.csvRadioBtn);
             this.reportingGroupBox.Controls.Add(this.xlsRadioButton);
             this.reportingGroupBox.Controls.Add(this.textFileRadioBtn);
             this.reportingGroupBox.Location = new System.Drawing.Point(642, 52);
             this.reportingGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.reportingGroupBox.Name = "reportingGroupBox";
             this.reportingGroupBox.Padding = new System.Windows.Forms.Padding(4);
-            this.reportingGroupBox.Size = new System.Drawing.Size(182, 102);
+            this.reportingGroupBox.Size = new System.Drawing.Size(106, 102);
             this.reportingGroupBox.TabIndex = 16;
             this.reportingGroupBox.TabStop = false;
             this.reportingGroupBox.Text = "Reporting";
@@ -296,23 +294,11 @@
             this.saveReportButton.Location = new System.Drawing.Point(650, 162);
             this.saveReportButton.Margin = new System.Windows.Forms.Padding(4);
             this.saveReportButton.Name = "saveReportButton";
-            this.saveReportButton.Size = new System.Drawing.Size(164, 28);
+            this.saveReportButton.Size = new System.Drawing.Size(98, 28);
             this.saveReportButton.TabIndex = 17;
             this.saveReportButton.Text = "Save Report";
             this.saveReportButton.UseVisualStyleBackColor = true;
             this.saveReportButton.Click += new System.EventHandler(this.saveReportButton_Click);
-            // 
-            // csvRadioBtn
-            // 
-            this.csvRadioBtn.AutoSize = true;
-            this.csvRadioBtn.Location = new System.Drawing.Point(82, 30);
-            this.csvRadioBtn.Margin = new System.Windows.Forms.Padding(4);
-            this.csvRadioBtn.Name = "csvRadioBtn";
-            this.csvRadioBtn.Size = new System.Drawing.Size(54, 21);
-            this.csvRadioBtn.TabIndex = 13;
-            this.csvRadioBtn.Text = ".csv";
-            this.csvRadioBtn.UseVisualStyleBackColor = true;
-            this.csvRadioBtn.CheckedChanged += new System.EventHandler(this.csvRadioBtn_CheckedChanged);
             // 
             // MainWindow
             // 
@@ -320,7 +306,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(883, 415);
+            this.ClientSize = new System.Drawing.Size(775, 413);
             this.Controls.Add(this.saveReportButton);
             this.Controls.Add(this.reportingGroupBox);
             this.Controls.Add(this.exitButton);
@@ -375,7 +361,6 @@
         private System.Windows.Forms.RadioButton xlsRadioButton;
         private System.Windows.Forms.RadioButton textFileRadioBtn;
         private System.Windows.Forms.Button saveReportButton;
-        private System.Windows.Forms.RadioButton csvRadioBtn;
     }
 }
 
