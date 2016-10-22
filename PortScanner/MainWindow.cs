@@ -307,7 +307,8 @@ namespace PortScanner
             }
             else
             {
-                _reportingHandler.BuildWorkBook(statusTextBox);
+                var path = _reportingHandler.GetSaveFileLocation(Enum.ReportType.Xls);
+                _reportingHandler.BuildWorkBook(statusTextBox,path);
             }
         }
 
