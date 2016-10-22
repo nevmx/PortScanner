@@ -45,49 +45,55 @@
             this.timeoutComboBox = new System.Windows.Forms.ComboBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
+            this.loopScanCheckBox = new System.Windows.Forms.CheckBox();
             this.modeGroupBox.SuspendLayout();
             this.timeoutGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // hostnameTextBox
             // 
-            this.hostnameTextBox.Location = new System.Drawing.Point(76, 12);
+            this.hostnameTextBox.Location = new System.Drawing.Point(101, 15);
+            this.hostnameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.hostnameTextBox.MaxLength = 15;
             this.hostnameTextBox.Name = "hostnameTextBox";
-            this.hostnameTextBox.Size = new System.Drawing.Size(174, 20);
+            this.hostnameTextBox.Size = new System.Drawing.Size(231, 22);
             this.hostnameTextBox.TabIndex = 0;
             // 
             // hostnameLabel
             // 
             this.hostnameLabel.AutoSize = true;
-            this.hostnameLabel.Location = new System.Drawing.Point(12, 15);
+            this.hostnameLabel.Location = new System.Drawing.Point(16, 18);
+            this.hostnameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hostnameLabel.Name = "hostnameLabel";
-            this.hostnameLabel.Size = new System.Drawing.Size(55, 13);
+            this.hostnameLabel.Size = new System.Drawing.Size(72, 17);
             this.hostnameLabel.TabIndex = 1;
             this.hostnameLabel.Text = "Hostname";
             // 
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(256, 15);
+            this.portLabel.Location = new System.Drawing.Point(341, 18);
+            this.portLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(31, 13);
+            this.portLabel.Size = new System.Drawing.Size(41, 17);
             this.portLabel.TabIndex = 2;
             this.portLabel.Text = "Ports";
             // 
             // portTextBoxMin
             // 
-            this.portTextBoxMin.Location = new System.Drawing.Point(296, 12);
+            this.portTextBoxMin.Location = new System.Drawing.Point(395, 15);
+            this.portTextBoxMin.Margin = new System.Windows.Forms.Padding(4);
             this.portTextBoxMin.MaxLength = 5;
             this.portTextBoxMin.Name = "portTextBoxMin";
-            this.portTextBoxMin.Size = new System.Drawing.Size(38, 20);
+            this.portTextBoxMin.Size = new System.Drawing.Size(49, 22);
             this.portTextBoxMin.TabIndex = 3;
             // 
             // checkPortButton
             // 
-            this.checkPortButton.Location = new System.Drawing.Point(351, 291);
+            this.checkPortButton.Location = new System.Drawing.Point(468, 358);
+            this.checkPortButton.Margin = new System.Windows.Forms.Padding(4);
             this.checkPortButton.Name = "checkPortButton";
-            this.checkPortButton.Size = new System.Drawing.Size(123, 23);
+            this.checkPortButton.Size = new System.Drawing.Size(164, 28);
             this.checkPortButton.TabIndex = 4;
             this.checkPortButton.Text = "Check Ports";
             this.checkPortButton.UseVisualStyleBackColor = true;
@@ -96,12 +102,13 @@
             // statusTextBox
             // 
             this.statusTextBox.Font = new System.Drawing.Font("Lucida Console", 9F);
-            this.statusTextBox.Location = new System.Drawing.Point(15, 55);
+            this.statusTextBox.Location = new System.Drawing.Point(20, 68);
+            this.statusTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.statusTextBox.Multiline = true;
             this.statusTextBox.Name = "statusTextBox";
             this.statusTextBox.ReadOnly = true;
             this.statusTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.statusTextBox.Size = new System.Drawing.Size(314, 253);
+            this.statusTextBox.Size = new System.Drawing.Size(417, 310);
             this.statusTextBox.TabIndex = 5;
             this.statusTextBox.Text = "Standby...";
             this.statusTextBox.TextChanged += new System.EventHandler(this.statusTextBox_TextChanged);
@@ -109,36 +116,40 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 39);
+            this.statusLabel.Location = new System.Drawing.Point(16, 48);
+            this.statusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(37, 13);
+            this.statusLabel.Size = new System.Drawing.Size(48, 17);
             this.statusLabel.TabIndex = 6;
             this.statusLabel.Text = "Status";
             // 
             // dashLabel
             // 
             this.dashLabel.AutoSize = true;
-            this.dashLabel.Location = new System.Drawing.Point(340, 15);
+            this.dashLabel.Location = new System.Drawing.Point(453, 18);
+            this.dashLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.dashLabel.Name = "dashLabel";
-            this.dashLabel.Size = new System.Drawing.Size(10, 13);
+            this.dashLabel.Size = new System.Drawing.Size(13, 17);
             this.dashLabel.TabIndex = 7;
             this.dashLabel.Text = "-";
             // 
             // portTextBoxMax
             // 
             this.portTextBoxMax.Enabled = false;
-            this.portTextBoxMax.Location = new System.Drawing.Point(356, 12);
+            this.portTextBoxMax.Location = new System.Drawing.Point(475, 15);
+            this.portTextBoxMax.Margin = new System.Windows.Forms.Padding(4);
             this.portTextBoxMax.MaxLength = 5;
             this.portTextBoxMax.Name = "portTextBoxMax";
-            this.portTextBoxMax.Size = new System.Drawing.Size(38, 20);
+            this.portTextBoxMax.Size = new System.Drawing.Size(49, 22);
             this.portTextBoxMax.TabIndex = 8;
             // 
             // portRangeCheckBox
             // 
             this.portRangeCheckBox.AutoSize = true;
-            this.portRangeCheckBox.Location = new System.Drawing.Point(400, 14);
+            this.portRangeCheckBox.Location = new System.Drawing.Point(533, 17);
+            this.portRangeCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.portRangeCheckBox.Name = "portRangeCheckBox";
-            this.portRangeCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.portRangeCheckBox.Size = new System.Drawing.Size(102, 21);
             this.portRangeCheckBox.TabIndex = 9;
             this.portRangeCheckBox.Text = "Port Range";
             this.portRangeCheckBox.UseVisualStyleBackColor = true;
@@ -148,9 +159,10 @@
             // 
             this.tcpModeRadioButton.AutoSize = true;
             this.tcpModeRadioButton.Checked = true;
-            this.tcpModeRadioButton.Location = new System.Drawing.Point(13, 24);
+            this.tcpModeRadioButton.Location = new System.Drawing.Point(17, 30);
+            this.tcpModeRadioButton.Margin = new System.Windows.Forms.Padding(4);
             this.tcpModeRadioButton.Name = "tcpModeRadioButton";
-            this.tcpModeRadioButton.Size = new System.Drawing.Size(46, 17);
+            this.tcpModeRadioButton.Size = new System.Drawing.Size(56, 21);
             this.tcpModeRadioButton.TabIndex = 10;
             this.tcpModeRadioButton.TabStop = true;
             this.tcpModeRadioButton.Text = "TCP";
@@ -160,9 +172,10 @@
             // udpModeRadioButton
             // 
             this.udpModeRadioButton.AutoSize = true;
-            this.udpModeRadioButton.Location = new System.Drawing.Point(13, 47);
+            this.udpModeRadioButton.Location = new System.Drawing.Point(17, 58);
+            this.udpModeRadioButton.Margin = new System.Windows.Forms.Padding(4);
             this.udpModeRadioButton.Name = "udpModeRadioButton";
-            this.udpModeRadioButton.Size = new System.Drawing.Size(48, 17);
+            this.udpModeRadioButton.Size = new System.Drawing.Size(58, 21);
             this.udpModeRadioButton.TabIndex = 11;
             this.udpModeRadioButton.Text = "UDP";
             this.udpModeRadioButton.UseVisualStyleBackColor = true;
@@ -172,9 +185,11 @@
             // 
             this.modeGroupBox.Controls.Add(this.udpModeRadioButton);
             this.modeGroupBox.Controls.Add(this.tcpModeRadioButton);
-            this.modeGroupBox.Location = new System.Drawing.Point(343, 42);
+            this.modeGroupBox.Location = new System.Drawing.Point(457, 52);
+            this.modeGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.modeGroupBox.Name = "modeGroupBox";
-            this.modeGroupBox.Size = new System.Drawing.Size(111, 83);
+            this.modeGroupBox.Padding = new System.Windows.Forms.Padding(4);
+            this.modeGroupBox.Size = new System.Drawing.Size(148, 102);
             this.modeGroupBox.TabIndex = 12;
             this.modeGroupBox.TabStop = false;
             this.modeGroupBox.Text = "Mode";
@@ -182,9 +197,11 @@
             // timeoutGroupBox
             // 
             this.timeoutGroupBox.Controls.Add(this.timeoutComboBox);
-            this.timeoutGroupBox.Location = new System.Drawing.Point(343, 135);
+            this.timeoutGroupBox.Location = new System.Drawing.Point(457, 166);
+            this.timeoutGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.timeoutGroupBox.Name = "timeoutGroupBox";
-            this.timeoutGroupBox.Size = new System.Drawing.Size(110, 52);
+            this.timeoutGroupBox.Padding = new System.Windows.Forms.Padding(4);
+            this.timeoutGroupBox.Size = new System.Drawing.Size(147, 64);
             this.timeoutGroupBox.TabIndex = 13;
             this.timeoutGroupBox.TabStop = false;
             this.timeoutGroupBox.Text = "Timeout";
@@ -198,17 +215,19 @@
             "1000 ms",
             "1500 ms",
             "2000 ms"});
-            this.timeoutComboBox.Location = new System.Drawing.Point(6, 21);
+            this.timeoutComboBox.Location = new System.Drawing.Point(8, 26);
+            this.timeoutComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.timeoutComboBox.Name = "timeoutComboBox";
-            this.timeoutComboBox.Size = new System.Drawing.Size(98, 21);
+            this.timeoutComboBox.Size = new System.Drawing.Size(129, 24);
             this.timeoutComboBox.TabIndex = 0;
             // 
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(351, 266);
+            this.cancelButton.Location = new System.Drawing.Point(468, 327);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(123, 23);
+            this.cancelButton.Size = new System.Drawing.Size(164, 28);
             this.cancelButton.TabIndex = 14;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -216,21 +235,35 @@
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(351, 241);
+            this.exitButton.Location = new System.Drawing.Point(468, 297);
+            this.exitButton.Margin = new System.Windows.Forms.Padding(4);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(123, 23);
+            this.exitButton.Size = new System.Drawing.Size(164, 28);
             this.exitButton.TabIndex = 15;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
+            // loopScanCheckBox
+            // 
+            this.loopScanCheckBox.AutoSize = true;
+            this.loopScanCheckBox.Location = new System.Drawing.Point(643, 18);
+            this.loopScanCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.loopScanCheckBox.Name = "loopScanCheckBox";
+            this.loopScanCheckBox.Size = new System.Drawing.Size(98, 21);
+            this.loopScanCheckBox.TabIndex = 16;
+            this.loopScanCheckBox.Text = "Loop Scan";
+            this.loopScanCheckBox.UseVisualStyleBackColor = true;
+            this.loopScanCheckBox.CheckedChanged += new System.EventHandler(this.loopScanCheckBox_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AcceptButton = this.checkPortButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(491, 320);
+            this.ClientSize = new System.Drawing.Size(777, 394);
+            this.Controls.Add(this.loopScanCheckBox);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.timeoutGroupBox);
@@ -246,6 +279,7 @@
             this.Controls.Add(this.hostnameLabel);
             this.Controls.Add(this.hostnameTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainWindow";
             this.Text = "PortScanner 0.1";
             this.Load += new System.EventHandler(this.MainWindow_Load);
@@ -276,6 +310,7 @@
         private System.Windows.Forms.ComboBox timeoutComboBox;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.CheckBox loopScanCheckBox;
     }
 }
 
