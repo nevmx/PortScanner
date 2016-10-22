@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NLog;
 
 namespace PortScanner
 {
@@ -18,6 +19,9 @@ namespace PortScanner
 
         // Delegate to report back with one open port (Async)
         public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled, bool isLast);
+
+        //Logger instance (Logs to file at application directory root)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // The manager instance
         ScannerManagerSingleton smc;
@@ -70,18 +74,22 @@ namespace PortScanner
             if (isCancelled)
             {
                 status = "Operation cancelled." + Environment.NewLine;
+                Logger.Info("Operation is Cancelled");
             }
 
             // The port is open
             else if (isOpen)
             {
                 status = String.Format("{0}, {1} port {2} is open.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
+                Logger.Info(status);
             }
 
             // The port is closed
             else
             {
                 status = String.Format("{0}, {1} port {2} is closed.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
+                Logger.Info(status);
+
             }
 
             // Write to the logging box and then unfreeze user inputs
@@ -170,7 +178,10 @@ namespace PortScanner
             if (!portRangeCheckBox.Checked)
             {
                 // Set status box text
-                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
+                var connectionText = String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin,
+                    Environment.NewLine);
+                statusTextBox.AppendText(connectionText);
+                Logger.Info(connectionText);
 
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
@@ -209,8 +220,10 @@ namespace PortScanner
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
 
                 // Set status box text
-                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
-
+                var connectionText = String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin,
+                    Environment.NewLine);
+                statusTextBox.AppendText(connectionText);
+                Logger.Info(connectionText);
                 // Toggle inputs and begin operation
                 ToggleInputs(false);
                 smc.ExecuteRangeAsync(hostname, portMin, portMax, timeout, scanMode, callback, cts.Token);
@@ -224,10 +237,13 @@ namespace PortScanner
             if (tcpModeRadioButton.Checked)
             {
                 currentScanMode = ScannerManagerSingleton.ScanMode.TCP;
+                Logger.Info("Current Scan Mode: "+ currentScanMode);
             }
             else
             {
                 currentScanMode = ScannerManagerSingleton.ScanMode.UDP;
+                Logger.Info("Current Scan Mode: " + currentScanMode);
+
             }
             return currentScanMode;
         }
