@@ -9,6 +9,9 @@ namespace PortScanner.Reporting
     public class ReportingHandler : IReportingHandler
     {
         public static int ReportType = 1;
+        private Workbook xlWorkBook;
+        private Worksheet xlWorkSheet;
+        private object misValue = System.Reflection.Missing.Value;
 
         public void SetReportType(Enum.ReportType reportType)
         {
@@ -54,15 +57,12 @@ namespace PortScanner.Reporting
         {
             Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
 
+            //If excel not installed, throw error
             if (xlApp == null)
             {
                 MessageBox.Show("Excel is not properly installed!!");
                 return;
             }
-
-            Workbook xlWorkBook;
-            Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
 
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
@@ -97,6 +97,7 @@ namespace PortScanner.Reporting
         {
             return textBox.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
         }
+
         private void releaseObject(object obj)
         {
             try
