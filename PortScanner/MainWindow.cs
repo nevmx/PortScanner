@@ -20,7 +20,7 @@ namespace PortScanner
         public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled, bool isLast);
 
         // The manager instance
-        ScannerManagerSingleton smc;
+        IScannerManagerSingleton smc;
 
         // Cancellation token source for the cancel button
         CancellationTokenSource cts;
@@ -174,7 +174,7 @@ namespace PortScanner
 
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
-
+                
                 // Send one check request and toggle user inputs
                 ToggleInputs(false);
                 smc.ExecuteOnceAsync(hostname, portMin, timeout, scanMode, callback, cts.Token);
