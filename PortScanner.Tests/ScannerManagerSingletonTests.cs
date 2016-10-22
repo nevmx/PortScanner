@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using PortScanner;
-using System.Threading.Tasks;
-using FakeItEasy;
+﻿using FakeItEasy;
 using NUnit.Framework;
+using System;
+using System.Reflection;
+using System.Threading;
 
 namespace PortScanner.Tests
 {
@@ -15,39 +10,29 @@ namespace PortScanner.Tests
     public class ScannerManagerSingletonTests
     {
         [Test]
-        public void ShouldIntiateUDPPortScanner()
+        public void ShouldIntiateUdpPortScanner()
         {
             //Arrange
-            var scannerManagerSingleton = new ScannerManagerSingleton();
+            var constructor = typeof(ScannerManagerSingleton).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[0], null);
+            var scannerManagerSingleton = (ScannerManagerSingleton)constructor.Invoke(null);
+            var mainWindowconstructor = typeof(MainWindow.ExecuteOnceAsyncCallback).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[0], null);
             ScannerManagerSingleton.ScanMode scanMode;
             scanMode = ScannerManagerSingleton.ScanMode.UDP;
             string hostname = "127.0.0.1";
             int port = 80;
             int timeout = 2000;
-
-
-            MainWindow.ExecuteOnceAsyncCallback callback = new MainWindow.ExecuteOnceAsyncCallback();
-            CancellationToken cancellationToken = new CancellationToken();
-
+            var cts = A.Fake<CancellationTokenSource>().Token;
+            var callback = A.Fake<MainWindow.ExecuteOnceAsyncCallback>();
 
             //Act
-            A.CallTo(
-                () =>
-                    scannerManagerSingleton.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback,
-                        cancellationToken)).MustHaveHappened();
+            scannerManagerSingleton.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback,
+                  cts);
 
             //Assert
-            scannerManagerSingleton.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback,
-                cancellationToken);
+            Assert.Pass();
 
 
         }
     }
-    //public enum ScanMode
-    //{
-    //    TCP = 1,
-    //    UDP = 2
-    //}
 
 }
-

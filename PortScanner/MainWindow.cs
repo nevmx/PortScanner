@@ -27,7 +27,7 @@ namespace PortScanner
 
         // Current mode of operation
         private ScannerManagerSingleton.ScanMode currentScanMode;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -62,7 +62,7 @@ namespace PortScanner
         }
 
         // This method is used as a callback for portscanning - writes to the log box (text box)
-        private void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
+        public void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
         {
             string status;
 
