@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using PortScanner.Reporting;
 
 namespace PortScanner
 {
@@ -20,13 +15,16 @@ namespace PortScanner
         public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled, bool isLast);
 
         // The manager instance
-        ScannerManagerSingleton smc;
+        private ScannerManagerSingleton smc;
 
         // Cancellation token source for the cancel button
-        CancellationTokenSource cts;
+        private CancellationTokenSource cts;
 
         // Current mode of operation
         private ScannerManagerSingleton.ScanMode currentScanMode;
+
+        //Handler for Reporting Utilities
+        private static ReportingHandler _reportingHandler = new ReportingHandler();
 
         public MainWindow()
         {
@@ -96,7 +94,7 @@ namespace PortScanner
         {
             var inputText = timeoutComboBox.Text;
 
-            foreach (var displayMemberText in (List<TimeoutListItem>) timeoutComboBox.DataSource)
+            foreach (var displayMemberText in (List<TimeoutListItem>)timeoutComboBox.DataSource)
             {
                 if (displayMemberText.DisplayMember == inputText)
                 {
@@ -127,12 +125,12 @@ namespace PortScanner
                 return;
             }
 
-            // Check port 
+            // Check port
             int portMin = InputChecker.ParsePort(portTextBoxMin.Text);
             if (portMin == -1)
             {
-                MessageBox.Show((portRangeCheckBox.Checked ? "Lower limit of port range" : "Port") + " invalid.", 
-                    "Input Error", 
+                MessageBox.Show((portRangeCheckBox.Checked ? "Lower limit of port range" : "Port") + " invalid.",
+                    "Input Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 portTextBoxMin.Focus();
@@ -214,7 +212,6 @@ namespace PortScanner
                 // Toggle inputs and begin operation
                 ToggleInputs(false);
                 smc.ExecuteRangeAsync(hostname, portMin, portMax, timeout, scanMode, callback, cts.Token);
-
             }
         }
 
@@ -267,12 +264,10 @@ namespace PortScanner
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -291,6 +286,39 @@ namespace PortScanner
             {
                 Application.Exit();
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+        }
+
+        private void saveReportButton_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = _reportingHandler.GetSaveFileDialog();
+            var result = saveFileDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                string filename = saveFileDialog.FileName;
+            }
+        }
+
+        private void textFileRadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            _reportingHandler.SetReportType(Enum.ReportType.Txt);
+        }
+
+        private void xlsRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _reportingHandler.SetReportType(Enum.ReportType.Xls);
+
+        }
+
+        private void csvRadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            _reportingHandler.SetReportType(Enum.ReportType.Csv);
+
         }
     }
 }
