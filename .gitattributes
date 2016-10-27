@@ -35,8 +35,11 @@
 #*.sqlproj   merge=binary
 #*.wwaproj   merge=binary
 
-*.csproj -text merge=union
-*.sln -text merge=union
+*.csproj -text merge=union 
+*.vbproj -text merge=union 
+*.fsproj -text merge=union 
+*.dbproj -text merge=union 
+*.sln -text merge=union 
 
 ###############################################################################
 # behavior for image files
