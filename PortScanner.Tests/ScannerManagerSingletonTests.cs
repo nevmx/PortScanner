@@ -29,10 +29,9 @@ namespace PortScanner.Tests
                   cts);
 
             //Assert
+            //A.CallTo(() => scannerManagerSingleton.ExecuteOnceAsync(hostname, port, timeout, scanMode, callback,
+            //    cts)).MustHaveHappened();
             Assert.Pass();
-
-
         }
     }
-
 }
