@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace PortScanner
 {
-    class ScannerManagerSingleton
+    public class ScannerManagerSingleton : IScannerManagerSingleton
     {
         // The instance variable - this is a singleton class
         private static ScannerManagerSingleton _instance;

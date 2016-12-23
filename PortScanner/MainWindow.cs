@@ -1,7 +1,10 @@
-﻿using System;
+﻿using PortScanner.Reporting;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using NLog;
 
 namespace PortScanner
 {
@@ -13,17 +16,23 @@ namespace PortScanner
         // Delegate to report back with one open port (Async)
         public delegate void ExecuteOnceAsyncCallback(int port, bool isOpen, bool isCancelled, bool isLast);
 
+        //Logger instance (Logs to file at application directory root)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // The manager instance
-        private ScannerManagerSingleton smc;
+        IScannerManagerSingleton smc;
+        
+        //Loop Scan
+        private static bool loopScan = false;
 
         // Cancellation token source for the cancel button
         private CancellationTokenSource cts;
 
-        //Loop Scan
-        private static bool loopScan = false;
-
         // Current mode of operation
         private ScannerManagerSingleton.ScanMode currentScanMode;
+
+        //Handler for Reporting Utilities
+        private static ReportingHandler _reportingHandler = new ReportingHandler();
 
         public MainWindow()
         {
@@ -59,7 +68,7 @@ namespace PortScanner
         }
 
         // This method is used as a callback for portscanning - writes to the log box (text box)
-        private void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
+        public void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
         {
             string status;
 
@@ -67,18 +76,22 @@ namespace PortScanner
             if (isCancelled)
             {
                 status = "Operation cancelled." + Environment.NewLine;
+                Logger.Info("Operation is Cancelled");
             }
 
             // The port is open
             else if (isOpen)
             {
                 status = String.Format("{0}, {1} port {2} is open.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
+                Logger.Info(status);
             }
 
             // The port is closed
             else
             {
                 status = String.Format("{0}, {1} port {2} is closed.{3}", hostnameTextBox.Text, currentScanMode.ToString(), port, Environment.NewLine);
+                Logger.Info(status);
+
             }
 
             // Write to the logging box and then unfreeze user inputs
@@ -167,11 +180,14 @@ namespace PortScanner
             if (!portRangeCheckBox.Checked)
             {
                 // Set status box text
-                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin, Environment.NewLine));
+                var connectionText = String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin,
+                    Environment.NewLine);
+                statusTextBox.AppendText(connectionText);
+                Logger.Info(connectionText);
 
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
-
+                
                 // Send one check request and toggle user inputs
                 ToggleInputs(false);
                 smc.ExecuteOnceAsync(hostname, portMin, timeout, scanMode, callback, cts.Token);
@@ -206,12 +222,13 @@ namespace PortScanner
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
 
                 // Set status box text
-                statusTextBox.AppendText(String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin,
-                    Environment.NewLine));
-
+                var connectionText = String.Format("Connecting to {0}, port {1}...{2}", hostname, portMin,
+                    Environment.NewLine);
+                statusTextBox.AppendText(connectionText);
+                Logger.Info(connectionText);
                 // Toggle inputs and begin operation
                 ToggleInputs(false);
-                smc.ExecuteRangeAsync(hostname, portMin, portMax, timeout, scanMode, callback, cts.Token, loopScan);
+                smc.ExecuteRangeAsync(hostname, portMin, portMax, timeout, scanMode, callback, cts.Token);
             }
         }
 
@@ -221,10 +238,13 @@ namespace PortScanner
             if (tcpModeRadioButton.Checked)
             {
                 currentScanMode = ScannerManagerSingleton.ScanMode.TCP;
+                Logger.Info("Current Scan Mode: "+ currentScanMode);
             }
             else
             {
                 currentScanMode = ScannerManagerSingleton.ScanMode.UDP;
+                Logger.Info("Current Scan Mode: " + currentScanMode);
+
             }
             return currentScanMode;
         }
@@ -299,6 +319,45 @@ namespace PortScanner
             {
                 loopScan = false;
             }
+        }
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+        }
+
+        private void saveReportButton_Click(object sender, EventArgs e)
+        {
+            //If txt type
+            if (_reportingHandler.GetReportType() == 1)
+            {
+                var saveFileDialog = _reportingHandler.GetSaveFileDialog();
+                var result = saveFileDialog.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    File.WriteAllText(saveFileDialog.FileName, _reportingHandler.BuildTextFile(statusTextBox));
+                }
+            }
+            else
+            {
+                //If xls type
+                var path = _reportingHandler.GetSaveFileLocation(Enum.ReportType.Xls);
+                _reportingHandler.BuildWorkBook(statusTextBox,path);
+            }
+        }
+
+        private void textFileRadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            _reportingHandler.SetReportType(Enum.ReportType.Txt);
+        }
+
+        private void xlsRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _reportingHandler.SetReportType(Enum.ReportType.Xls);
+        }
+
+        private void csvRadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            _reportingHandler.SetReportType(Enum.ReportType.Csv);
         }
     }
 }
