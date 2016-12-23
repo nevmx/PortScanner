@@ -73,33 +73,41 @@ namespace PortScanner
         }
 
         // Scan a range of ports asynchronously
-        public async void ExecuteRangeAsync(string hostname, int portMin, int portMax, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
+        public async void ExecuteRangeAsync(string hostname, int portMin, int portMax, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct, bool loopScan)
         {
-            // Instantiate a PortScanner
-            InstantiatePortScanner(scanMode);
-
-            // Assign first values
-            portScanner.Hostname = hostname;
-            portScanner.Timeout = timeout;
-
-            bool isLast = false;
-            bool cancelled = false;
-
-            for (int i = portMin; i <= portMax && !cancelled; i++)
+            while (loopScan)
             {
-                if (i == portMax)
+                if (ct.IsCancellationRequested)
                 {
-                    isLast = true;
+                    loopScan = false;
+                    break;
                 }
+                // Instantiate a PortScanner
+                InstantiatePortScanner(scanMode);
 
-                portScanner.Port = i;
+                // Assign first values
+                portScanner.Hostname = hostname;
+                portScanner.Timeout = timeout;
 
-                var task = portScanner.CheckOpenAsync(ct);
-                await task;
+                bool isLast = false;
+                bool cancelled = false;
 
-                cancelled = ct.IsCancellationRequested;
+                for (int i = portMin; i <= portMax && !cancelled; i++)
+                {
+                    if (i == portMax)
+                    {
+                        isLast = true;
+                    }
 
-                callback(i, task.Result, cancelled, isLast);
+                    portScanner.Port = i;
+
+                    var task = portScanner.CheckOpenAsync(ct);
+                    await task;
+
+                    cancelled = ct.IsCancellationRequested;
+
+                    callback(i, task.Result, cancelled, isLast);
+                }
             }
         }
     }

@@ -21,6 +21,9 @@ namespace PortScanner
 
         // The manager instance
         IScannerManagerSingleton smc;
+        
+        //Loop Scan
+        private static bool loopScan = false;
 
         // Cancellation token source for the cancel button
         private CancellationTokenSource cts;
@@ -262,6 +265,7 @@ namespace PortScanner
         // Toggle all inputs
         private void ToggleInputs(bool setting)
         {
+            loopScanCheckBox.Enabled = setting;
             hostnameTextBox.Enabled = setting;
             portTextBoxMin.Enabled = setting;
             checkPortButton.Enabled = setting;
@@ -305,6 +309,17 @@ namespace PortScanner
             }
         }
 
+        private void loopScanCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loopScanCheckBox.Checked)
+            {
+                loopScan = true;
+            }
+            else
+            {
+                loopScan = false;
+            }
+        }
         private void groupBox1_Enter(object sender, EventArgs e)
         {
         }

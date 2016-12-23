@@ -45,6 +45,7 @@
             this.timeoutComboBox = new System.Windows.Forms.ComboBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
+            this.loopScanCheckBox = new System.Windows.Forms.CheckBox();
             this.reportingGroupBox = new System.Windows.Forms.GroupBox();
             this.xlsRadioButton = new System.Windows.Forms.RadioButton();
             this.textFileRadioBtn = new System.Windows.Forms.RadioButton();
@@ -248,6 +249,17 @@
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
+            // loopScanCheckBox
+            // 
+            this.loopScanCheckBox.AutoSize = true;
+            this.loopScanCheckBox.Location = new System.Drawing.Point(643, 18);
+            this.loopScanCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.loopScanCheckBox.Name = "loopScanCheckBox";
+            this.loopScanCheckBox.Size = new System.Drawing.Size(98, 21);
+            this.loopScanCheckBox.TabIndex = 16;
+            this.loopScanCheckBox.Text = "Loop Scan";
+            this.loopScanCheckBox.UseVisualStyleBackColor = true;
+            this.loopScanCheckBox.CheckedChanged += new System.EventHandler(this.loopScanCheckBox_CheckedChanged);
             // reportingGroupBox
             // 
             this.reportingGroupBox.Controls.Add(this.xlsRadioButton);
@@ -306,6 +318,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
+            this.Controls.Add(this.loopScanCheckBox);
             this.ClientSize = new System.Drawing.Size(775, 413);
             this.Controls.Add(this.saveReportButton);
             this.Controls.Add(this.reportingGroupBox);
@@ -357,6 +370,7 @@
         private System.Windows.Forms.ComboBox timeoutComboBox;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.CheckBox loopScanCheckBox;
         private System.Windows.Forms.GroupBox reportingGroupBox;
         private System.Windows.Forms.RadioButton xlsRadioButton;
         private System.Windows.Forms.RadioButton textFileRadioBtn;
