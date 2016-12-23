@@ -24,14 +24,14 @@ namespace PortScanner
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // The manager instance
-        ScannerManagerSingleton smc;
+        IScannerManagerSingleton smc;
 
         // Cancellation token source for the cancel button
         CancellationTokenSource cts;
 
         // Current mode of operation
         private ScannerManagerSingleton.ScanMode currentScanMode;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -66,7 +66,7 @@ namespace PortScanner
         }
 
         // This method is used as a callback for portscanning - writes to the log box (text box)
-        private void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
+        public void PortResult(int port, bool isOpen, bool isCancelled, bool isLast)
         {
             string status;
 
@@ -185,7 +185,7 @@ namespace PortScanner
 
                 // The callback for scan result
                 var callback = new ExecuteOnceAsyncCallback(PortResult);
-
+                
                 // Send one check request and toggle user inputs
                 ToggleInputs(false);
                 smc.ExecuteOnceAsync(hostname, portMin, timeout, scanMode, callback, cts.Token);
