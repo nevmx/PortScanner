@@ -110,6 +110,11 @@ namespace PortScanner
                 }
             }
         }
+
+        public void ExecuteRangeAsync(string hostname, int portMin, int portMax, int timeout, ScanMode scanMode, MainWindow.ExecuteOnceAsyncCallback callback, CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
